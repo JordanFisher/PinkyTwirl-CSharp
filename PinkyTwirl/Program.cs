@@ -11,7 +11,13 @@ namespace PinkyTwirl
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PinkyTwirlForm());
+            try
+            {
+                Application.Run(new PinkyTwirlForm());
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }

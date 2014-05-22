@@ -1,4 +1,8 @@
 using System;
+using System.IO;
+using System.Diagnostics;
+using System.Threading;
+using System.Drawing;
 using System.Windows.Forms;
 using Gma.UserActivityMonitor;
 using System.Collections;
@@ -7,6 +11,15 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 using WindowsInput;
+
+using SlimDX;
+using SlimDX.XInput;
+using Gamepad;
+
+using xna = Microsoft.Xna.Framework;
+using input = Microsoft.Xna.Framework.Input;
+
+using PinkyGame;
 
 namespace PinkyTwirl
 {
@@ -20,7 +33,13 @@ namespace PinkyTwirl
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
-        public void DoMouseClick_Down()
+        public void MouseLeftClick()
+        {
+            DoLeftMouseClick_Down();
+            DoLeftMouseClick_Up();
+        }
+
+        public void DoLeftMouseClick_Down()
         {
             // Call the imported function with the cursor's current position
             uint X = (uint)Cursor.Position.X;
@@ -28,12 +47,34 @@ namespace PinkyTwirl
             mouse_event(MOUSEEVENTF_LEFTDOWN, X, Y, 0, 0);
         }
 
-        public void DoMouseClick_Up()
+        public void DoLeftMouseClick_Up()
         {
             // Call the imported function with the cursor's current position
             uint X = (uint)Cursor.Position.X;
             uint Y = (uint)Cursor.Position.Y;
             mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+        }
+
+        public void MouseRightClick()
+        {
+            DoRightMouseClick_Down();
+            DoRightMouseClick_Up();
+        }
+
+        public void DoRightMouseClick_Down()
+        {
+            // Call the imported function with the cursor's current position
+            uint X = (uint)Cursor.Position.X;
+            uint Y = (uint)Cursor.Position.Y;
+            mouse_event(MOUSEEVENTF_RIGHTDOWN, X, Y, 0, 0);
+        }
+
+        public void DoRightMouseClick_Up()
+        {
+            // Call the imported function with the cursor's current position
+            uint X = (uint)Cursor.Position.X;
+            uint Y = (uint)Cursor.Position.Y;
+            mouse_event(MOUSEEVENTF_RIGHTUP, X, Y, 0, 0);
         }
 
         [DllImport("user32.dll")]
@@ -42,6 +83,26 @@ namespace PinkyTwirl
         [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
+		[DllImport("user32.dll")]
+		static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
+
+		static void ShiftWindow(int x, int y, int width, int height)
+		{
+			IntPtr handle = GetForegroundWindow();
+
+			Rectangle rect = new Rectangle();
+			GetWindowRect(handle, out rect);
+
+			MoveWindow(handle, rect.X + x, rect.Y + y, rect.Width - rect.X + width, rect.Height - rect.Y + height, true);
+		}
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+
         static string GetActiveWindowTitle()
         {
             const int nChars = 256;
@@ -49,21 +110,94 @@ namespace PinkyTwirl
             StringBuilder Buff = new StringBuilder(nChars);
             handle = GetForegroundWindow();
 
+            string description;
+            try
+            {
+                int processId = 0;
+                int threadId = GetWindowThreadProcessId(handle, out processId);
+                var proc = System.Diagnostics.Process.GetProcessById(processId);
+                description = proc.MainModule.FileVersionInfo.FileDescription;
+            }
+            catch (Exception e)
+            {
+                description = "";
+            }
+
             if (GetWindowText(handle, Buff, nChars) > 0)
-                return Buff.ToString();
+                return Buff.ToString() + description;
             else
-                return "";
+                return description;
         }
 
         static PinkyTwirlForm TheForm;
         public PinkyTwirlForm()
         {
             TheForm = this;
+            this.Visible = true;
+
+            FormClosed += PinkyTwirlForm_FormClosed;
 
             InitializeComponent();
             InitDicts();
 
             this.ActiveCheckbox.Checked = true;
+
+            PinkyGame.Manager.OnRightJoystickMove += Manager_OnRightJoystickMove;
+            PinkyGame.Manager.OnButtonPress += Manager_OnButtonPress;
+            PinkyGame.Manager.OnButtonRelease += Manager_OnButtonRelease;
+        }
+
+        void Manager_OnButtonRelease(input.GamePadState obj)
+        {
+            if (input.Buttons.RightShoulder.Released())
+            {
+                EndCtrlTab();
+            }
+        }
+
+        void Manager_OnButtonPress(input.GamePadState obj)
+        {
+            if (input.Buttons.RightShoulder.Down())
+            {
+                if (input.Buttons.LeftShoulder.Down()) 
+                {
+                    if (input.Buttons.Y.Pressed())
+                    {
+                        SendKeys.Send("{F5}");
+                        SendKeys.Flush();
+                    }
+                    if (input.Buttons.B.Pressed())
+                    {
+                        AltF4();
+                    }
+                }
+                else
+                {
+                    if (input.Buttons.B.Pressed()) StartAltTab();
+                    if (input.Buttons.Y.Pressed()) StartAltShiftTab();
+                    if (input.Buttons.A.Pressed()) MouseLeftClick();
+                    if (input.Buttons.X.Pressed()) MouseRightClick();
+                }
+            }
+        }
+
+        void Manager_OnRightJoystickMove(input.GamePadState state)
+        {
+            if (input.Buttons.RightShoulder.Down())
+            {
+                var v = state.ThumbSticks.Right * 10;
+                if (v.X > 0 && v.X < 1) v.X = 1;
+                if (v.X < 0 && v.X > -1) v.X = -1;
+                if (v.Y > 0 && v.Y < 1) v.Y = 1;
+                if (v.Y < 0 && v.Y > -1) v.Y = -1;
+
+                ShiftWindow((int)v.X, -(int)v.Y, 0, 0);
+            }
+        }
+
+        void PinkyTwirlForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+ 	        PinkyGame.Manager.End();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -177,8 +311,12 @@ namespace PinkyTwirl
                     if (DoLog) Log("    Action taken");
                     ActionAction();
                 }
+
+                //Controller();
             }
         }
+
+
 
       /*  void Template()
         {
@@ -210,20 +348,35 @@ namespace PinkyTwirl
             SendKeys.Send("D");
             _Up(VirtualKeyCode.LWIN);
         }
-        void Space()
+        void ThreeKeyStart_Space()
         {
             FuncKey = Keys.F13;
             var Map = GetMap();
             FuncMap = Map[FuncKey];
         }
+		void ThreeKeyStart_Z()
+		{
+			FuncKey = Keys.F14;
+			var Map = GetMap();
+			FuncMap = Map[FuncKey];
+		}
         void AltF4()
         {
             //_Down("{ALT}");
             SendKeys.Send("%{F4}");
             //_Up("{ALT}");
         }
+        void StartAltShiftTab()
+        {
+            _Down(VirtualKeyCode.LMENU);
+            _Down(VirtualKeyCode.LSHIFT);
+            _Down(VirtualKeyCode.TAB);
+            //SendKeys.Send("{TAB}");
+            StartCheckingToEndCtrlTab(MainFuncKey);
+        }
         void StartAltTab()
         {
+            _Up(VirtualKeyCode.LSHIFT);
             _Down(VirtualKeyCode.LMENU);
             _Down(VirtualKeyCode.TAB);
             //SendKeys.Send("{TAB}");
@@ -281,21 +434,87 @@ namespace PinkyTwirl
             //if (Map.ContainsKey(e.KeyCode))
             if (e.KeyCode == KeyToEndOn)
             {
-                HookManager.KeyUp -= CheckToEndCtrlTab;
-                CheckingToEndCtrlTab = false;
-
-                Skip = true;
-                _Up(VirtualKeyCode.LCONTROL);
-                _Up(VirtualKeyCode.LMENU);
-                _Up(VirtualKeyCode.TAB);
-                Skip = false;
+                EndCtrlTab();
 
                 if (DoLog) Log(string.Format("    Ending alt tab via function key {0}", e.KeyCode));
             }
         }
 
+        private void EndCtrlTab()
+        {
+            HookManager.KeyUp -= CheckToEndCtrlTab;
+            CheckingToEndCtrlTab = false;
+
+            Skip = true;
+            _Up(VirtualKeyCode.LCONTROL);
+            _Up(VirtualKeyCode.LSHIFT);
+            _Up(VirtualKeyCode.LMENU);
+            _Up(VirtualKeyCode.TAB);
+            Skip = false;
+        }
+
         string KillLine = "{HOME}{HOME}+{END}{DEL}";
         void Kill() { }
+
+        [DllImport("user32.dll")]
+        static extern IntPtr FindWindow(String sClassName, String sAppName);
+
+        void StartGit()
+        {
+            git_dir = null;
+            Thread thread = new Thread(GetCurExplorerDir);
+            thread.Start();
+            thread.Join();
+
+            if (git_dir != null)
+            {
+                git_dir = Directory.GetParent(git_dir).FullName;
+
+                Log(git_dir);
+                StartGitProcess(git_dir);
+            }
+        }
+
+        void StartGitProcess(string dir)
+        {
+            Process scriptProc = new Process();
+            scriptProc.StartInfo.FileName = @"cscript";
+            scriptProc.StartInfo.WorkingDirectory = dir;
+            scriptProc.StartInfo.Arguments = "//B //Nologo \"C:/Program Files (x86)/Git/Git Bash.vbs\"";
+            scriptProc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            scriptProc.Start();
+        }
+
+        static string git_dir = null;
+        void GetCurExplorerDir()
+        {
+            IntPtr MyHwnd = GetForegroundWindow();
+            var t = Type.GetTypeFromProgID("Shell.Application");
+            dynamic o = Activator.CreateInstance(t);
+            try
+            {
+                var ws = o.Windows();
+                for (int i = 0; i < ws.Count; i++)
+                {
+                    var ie = ws.Item(i);
+                    if (ie == null || ie.hwnd != (long)MyHwnd) continue;
+                    var path = System.IO.Path.GetFileName((string)ie.FullName);
+                    if (path.ToLower() == "explorer.exe")
+                    {
+                        var explorepath = ie.document.focuseditem.path;
+                        git_dir = explorepath;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Write("!");
+            }
+            finally
+            {
+                Marshal.FinalReleaseComObject(o);
+            }
+        }
 
         Dictionary<T1, Dictionary<T2, K>> DeepCopy<T1, T2, K>(Dictionary<T1, Dictionary<T2, K>> source)
         {
@@ -310,7 +529,7 @@ namespace PinkyTwirl
             return d;
         }
 
-        const Keys MainFuncKey = Keys.F12;
+        const Keys MainFuncKey = Keys.F15;
         //const Keys MainFuncKey = Keys.RMenu;
         //const Keys MainFuncKey = Keys.Oemtilde;
 
@@ -323,8 +542,7 @@ namespace PinkyTwirl
                     MainFuncKey, 
                     new Dictionary<Keys, ShortcutAction>
                     {
-                        //{ Keys.Z, (Action)Template },
-                        { Keys.Z, "std::shared_ptr<" },
+                        //{ Keys.Z, "std::shared_ptr<" },
 
                         { Keys.I , "{UP}" }, { Keys.J , "{LEFT}"}, { Keys.K , "{DOWN}"}, { Keys.L , "{RIGHT}"},
                         { Keys.M , "^{RIGHT}"}, { Keys.N , "^{LEFT}"},
@@ -351,7 +569,14 @@ namespace PinkyTwirl
 
                         // Special Alt + Space + AdditionalKey command. Once the function Space is ran}, { PinkyTwirl waits to hear for an additional third key.
                         // This is a hack. Eventually robust support for 3-key combos will be added.
-                        { Keys.Space, (Action)Space }
+                        { Keys.Space, (Action)ThreeKeyStart_Space },
+						{ Keys.Z,     (Action)ThreeKeyStart_Z },
+
+                        //// JoySwitch
+                        //{ Keys.D5, (Action)MouseLeftClick },
+                        //{ Keys.D7, (Action)MouseRightClick },
+                        //{ Keys.D6, (Action)StartAltTab },
+                        //{ Keys.D8, (Action)StartAltShiftTab },
                     }
                 },
 
@@ -412,6 +637,8 @@ namespace PinkyTwirl
                      Keys.F13,
                         new Dictionary<Keys, ShortcutAction>
                         {
+                            { Keys.G, (Action)StartGit},
+
                             { Keys.H, "^5^5{ESC}{ESC}"}, { Keys.J, "^8"}, { Keys.K, "^9^9"},
                             { Keys.U, "^we"}, { Keys.I, "^wo"},
                             { Keys.O, "^wq"}, { Keys.P, "^di"},
@@ -419,17 +646,27 @@ namespace PinkyTwirl
                             { Keys.F, "^/>open "},
         
 							// WiiU network shenanigans
-							{ Keys.W, "{TAB}19216810{RIGHT}3{TAB}2552552550{TAB}19216810{RIGHT}1"},
-
-							
-
-                            //{ "D", BringVisualStudio},
-                            //{ "F", BringChrome},
-                            //{ "E", BringToDo},
-                            //{ "R", BringCkToDo},
-                            //{ "V", BringGit },
+							//{ Keys.W, "{TAB}19216810{RIGHT}3{TAB}2552552550{TAB}19216810{RIGHT}1"},
                         }
-                  }
+                  },
+
+                 // Alt-Space mapping
+                 {
+                     Keys.F14,
+                        new Dictionary<Keys, ShortcutAction>
+                        {
+                            { Keys.J, (Action)(() => ShiftWindow(-1,  0,  0,  0)) },
+							{ Keys.K, (Action)(() => ShiftWindow( 0,  1,  0,  0)) },
+							{ Keys.L, (Action)(() => ShiftWindow( 1,  0,  0,  0)) },
+							{ Keys.I, (Action)(() => ShiftWindow( 0, -1,  0,  0)) },
+							{ Keys.N, (Action)(() => ShiftWindow( 0,  0, -1,  0)) },
+							{ Keys.M, (Action)(() => ShiftWindow( 0,  0,  1,  0)) },
+							{ Keys.U, (Action)(() => ShiftWindow( 0,  0,  0, -1)) },
+							{ Keys.O, (Action)(() => ShiftWindow( 0,  0,  0,  1)) },
+                        }
+                  },
+
+                
             };
 
 
@@ -460,7 +697,7 @@ namespace PinkyTwirl
             //VisualStuioMap[MainFuncKey][Keys.D] = "^23" // Backward incremental search
             //VisualStuioMap[MainFuncKey][Keys.S] = "{ESC}" // Clear search
             VisualStudioMap[MainFuncKey][Keys.T] = "+%{ENTER}"; // Fullscreen
-            VisualStudioMap[MainFuncKey][Keys.Space] = (Action)Space;
+            VisualStudioMap[MainFuncKey][Keys.Space] = (Action)ThreeKeyStart_Space;
 
             // Notepad map example. I use Notepad as a food diary, where I track my food, symptoms, and workout schedule. To facillitate data entry I use these shortcuts:
             var NotepadMap = DeepCopy(DefaultMap);
@@ -474,7 +711,7 @@ namespace PinkyTwirl
 
             // Command prompt. This overrides the tedious Alt-Space e p method for pasting with the default PinkyTwirl paste command Alt + W
             var CommandPromptMap = DeepCopy(DefaultMap);
-            CommandPromptMap[MainFuncKey][Keys.W] = "%{SPACE}ep";
+			CommandPromptMap[MainFuncKey][Keys.W] = (Action)CommandPrompt_Paste;
             CommandPromptMap[Keys.D4][Keys.R] = "%{SPACE}es{ENTER}";
             CommandPromptMap[MainFuncKey][Keys.A] = "%{SPACE}ef{ENTER}";
             CommandPromptMap[MainFuncKey][Keys.F4] = "%{SPACE}c";
@@ -504,6 +741,8 @@ namespace PinkyTwirl
             var GitMap = DeepCopy(CommandPromptMap);
             GitMap[MainFuncKey][Keys.F] = (Action)Commit;
             GitMap[MainFuncKey][Keys.D] = (Action)GitToCloudberry;
+			GitMap[MainFuncKey][Keys.C] = "{HOME}^kgit config --global user.email \"jordan@pwnee.com\"";
+			GitMap[MainFuncKey][Keys.V] = "{HOME}^kgit config --global user.email \"jordan.efisher@gmail.com\"";
             GitMap[Keys.D3][Keys.O] = "^k";
             GitMap[Keys.D3][Keys.U] = "^u";
             GitMap[Keys.D3][Keys.K] = "{HOME}^k";
@@ -581,6 +820,16 @@ namespace PinkyTwirl
             };
         }
 
+		void CommandPrompt_Paste()
+		{
+			_Down(VirtualKeyCode.LMENU);
+			//_Press(VirtualKeyCode.SPACE);
+			SendKeys.Send(" ");
+			_Up(VirtualKeyCode.LMENU);
+
+			SendKeys.Send("ep");
+		}
+
         void Commit()
         {
             SendKeys.Send("{HOME}^k");
@@ -656,7 +905,7 @@ namespace PinkyTwirl
         {
             if (Skip) return;
 
-            //if (e.KeyCode == Keys.H) Console.Write("");
+            if (e.KeyCode == Keys.W) Console.Write("");
 
             try
             {
@@ -740,10 +989,11 @@ namespace PinkyTwirl
                     Skip = false;
                 }
             }
-            catch
+            catch (Exception exc)
             {
                 Log("");
                 Log("Error uncaught!");
+				Log(exc.ToString());
                 Log("");
             }
         }
@@ -812,6 +1062,18 @@ namespace PinkyTwirl
         private void LogCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             DoLog = this.LogCheckbox.Checked;
+        }
+
+        private void GamepadCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.GamepadCheckbox.Checked)
+            {
+                PinkyGame.Manager.Start();
+            }
+            else
+            {
+                PinkyGame.Manager.End();
+            }
         }
     }
 }
