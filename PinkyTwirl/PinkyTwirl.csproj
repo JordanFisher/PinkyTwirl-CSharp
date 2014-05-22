@@ -122,7 +122,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gma.UserActivityMonitor\HookManager.csproj">
+    <ProjectReference Include="..\HookManager\HookManager.csproj">
       <Project>{F52AA97E-180A-40ED-8F2B-09080171D6C7}</Project>
       <Name>HookManager</Name>
     </ProjectReference>
