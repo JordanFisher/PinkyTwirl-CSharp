@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkyTwirl", "PinkyTwirl\Pi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkyGame", "PinkyGame\PinkyGame\PinkyGame.csproj", "{648EC513-564D-48B5-AA3F-34BFA4391A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinkyGameContent", "PinkyGame\PinkyGameContent\PinkyGameContent.contentproj", "{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,12 +50,6 @@ Global
 		{648EC513-564D-48B5-AA3F-34BFA4391A41}.Release|Mixed Platforms.Build.0 = Release|x86
 		{648EC513-564D-48B5-AA3F-34BFA4391A41}.Release|x86.ActiveCfg = Release|x86
 		{648EC513-564D-48B5-AA3F-34BFA4391A41}.Release|x86.Build.0 = Release|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Debug|x86.ActiveCfg = Debug|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Release|Any CPU.ActiveCfg = Release|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{652CE2BC-B2E4-4E9A-A94D-527FB52D0E7C}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
