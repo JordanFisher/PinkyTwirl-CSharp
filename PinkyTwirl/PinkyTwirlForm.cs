@@ -4,19 +4,14 @@ using System.Diagnostics;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
-using Gma.UserActivityMonitor;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
+using Gma.UserActivityMonitor;
+
 using WindowsInput;
 
-using SlimDX;
-using SlimDX.XInput;
-using Gamepad;
-
-using xna = Microsoft.Xna.Framework;
 using input = Microsoft.Xna.Framework.Input;
 
 using PinkyGame;
@@ -83,22 +78,22 @@ namespace PinkyTwirl
         [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
-		[DllImport("user32.dll")]
-		static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+        [DllImport("user32.dll")]
+        static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
 
-		[DllImport("user32.dll")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
 
-		static void ShiftWindow(int x, int y, int width, int height)
-		{
-			IntPtr handle = GetForegroundWindow();
+        static void ShiftWindow(int x, int y, int width, int height)
+        {
+            IntPtr handle = GetForegroundWindow();
 
-			Rectangle rect = new Rectangle();
-			GetWindowRect(handle, out rect);
+            Rectangle rect = new Rectangle();
+            GetWindowRect(handle, out rect);
 
-			MoveWindow(handle, rect.X + x, rect.Y + y, rect.Width - rect.X + width, rect.Height - rect.Y + height, true);
-		}
+            MoveWindow(handle, rect.X + x, rect.Y + y, rect.Width - rect.X + width, rect.Height - rect.Y + height, true);
+        }
 
         [DllImport("user32.dll")]
         public static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
@@ -118,7 +113,7 @@ namespace PinkyTwirl
                 var proc = System.Diagnostics.Process.GetProcessById(processId);
                 description = proc.MainModule.FileVersionInfo.FileDescription;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 description = "";
             }
@@ -197,7 +192,7 @@ namespace PinkyTwirl
 
         void PinkyTwirlForm_FormClosed(object sender, FormClosedEventArgs e)
         {
- 	        PinkyGame.Manager.End();
+            PinkyGame.Manager.End();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -354,12 +349,12 @@ namespace PinkyTwirl
             var Map = GetMap();
             FuncMap = Map[FuncKey];
         }
-		void ThreeKeyStart_Z()
-		{
-			FuncKey = Keys.F14;
-			var Map = GetMap();
-			FuncMap = Map[FuncKey];
-		}
+        void ThreeKeyStart_Z()
+        {
+            FuncKey = Keys.F14;
+            var Map = GetMap();
+            FuncMap = Map[FuncKey];
+        }
         void AltF4()
         {
             //_Down("{ALT}");
@@ -402,6 +397,60 @@ namespace PinkyTwirl
             HookManager.KeyUp += CheckToEndCtrlTab;
             CheckingToEndCtrlTab = true;
         }
+
+        bool CheckingToEndPanel = false;
+        string LastPanelCommand = null;
+        string LastCommandAfterEnter = null; // This is the "last command" used after a user presses enter. We need this because some VS panels switch to a seperate panel after pushing enter.
+        void OpenVsPanel(string command, string command_after_enter = null)
+        {
+            LastPanelCommand = command;
+            LastCommandAfterEnter = command_after_enter;
+
+            Skip = true;
+            SendKeys.Send("+{ESC}" + LastPanelCommand);
+            Skip = false;
+
+            if (CheckingToEndPanel) return;
+            HookManager.KeyUp += CheckToEndPanel;
+            CheckingToEndPanel = true;
+        }
+
+        void ClosePanel()
+        {
+            LastPanelCommand = string.Empty;
+            CloseLastPanel();
+        }
+
+        void CheckToEndPanel(object sender, KeyEventArgs e)
+        {
+            if (Skip) return;
+
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape)
+            {
+                CloseLastPanel();
+
+                if (DoLog) Log(string.Format("    Ending vs panel via key {0}", e.KeyCode));
+            }
+        }
+
+        void CloseLastPanel()
+        {
+            if (LastCommandAfterEnter == null)
+            {
+                HookManager.KeyUp -= CheckToEndPanel;
+                CheckingToEndPanel = false;
+            }
+
+            Skip = true;
+            SendKeys.Send(LastPanelCommand + "+{ESC}");
+            Skip = false;
+
+            LastPanelCommand = LastCommandAfterEnter;
+            LastCommandAfterEnter = null;
+        }
+
+
+
         void DebugCloudberry()
         {
             Skip = true;
@@ -427,7 +476,7 @@ namespace PinkyTwirl
         }
         bool CheckingToEndCtrlTab = false;
         Keys KeyToEndOn;
-        void CheckToEndCtrlTab(object sender, KeyEventArgs e)
+        void    CheckToEndCtrlTab(object sender, KeyEventArgs e)
         {
             if (Skip) return;
 
@@ -506,7 +555,7 @@ namespace PinkyTwirl
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Write("!");
             }
@@ -553,30 +602,24 @@ namespace PinkyTwirl
                         { Keys.Tab , (Action)StartAltTab},
                         { Keys.F4 , (Action)AltF4},
 
-                        // Kill                
-                        { Keys.Escape , (Action)Kill},      
-                        
-                        // Add line above current line
-                        { Keys.Enter , "{UP}{END}{ENTER}"},
+                        { Keys.Escape , (Action)Kill},      // Kill
+                        { Keys.Enter , "{UP}{END}{ENTER}"}, // Add line above current line
 
                         // Go to address bar
                         { Keys.F , "{F6}%d"}, { Keys.G , "%d{F6}{F6}"}, { Keys.D , (Action)ToDesktop},
 
-                        // Find      // Find and replace
-                        { Keys.A , "^f"}, { Keys.Q , "^h"},
-                        // undo      // Redo      // Paste
-                        { Keys.E , "^z"}, { Keys.R , "^y"}, { Keys.W , "^v"},
+                        { Keys.A , "^f"},                                // Find
+                        { Keys.Q , "^h"},                                // Find and replace
+                        { Keys.Z , (Action)(() => OpenVsPanel("+^f", "%f")) }, // Find in all files
+
+                        { Keys.E , "^z"}, // Undo
+                        { Keys.R , "^y"}, // Redo
+                        { Keys.W , "^v"}, // Paste
 
                         // Special Alt + Space + AdditionalKey command. Once the function Space is ran}, { PinkyTwirl waits to hear for an additional third key.
                         // This is a hack. Eventually robust support for 3-key combos will be added.
                         { Keys.Space, (Action)ThreeKeyStart_Space },
-						{ Keys.Z,     (Action)ThreeKeyStart_Z },
-
-                        //// JoySwitch
-                        //{ Keys.D5, (Action)MouseLeftClick },
-                        //{ Keys.D7, (Action)MouseRightClick },
-                        //{ Keys.D6, (Action)StartAltTab },
-                        //{ Keys.D8, (Action)StartAltShiftTab },
+                        //{ Keys.Z,     (Action)ThreeKeyStart_Z },
                     }
                 },
 
@@ -622,7 +665,7 @@ namespace PinkyTwirl
                         { Keys.K, "std::static_pointer_cast<" }
                     }
                  },
-				 /*
+                 /*
                 // F-mapping, easy chars
                 { Keys.F, 
                     new Dictionary<Keys, ShortcutAction>
@@ -639,14 +682,28 @@ namespace PinkyTwirl
                         {
                             { Keys.G, (Action)StartGit},
 
-                            { Keys.H, "^5^5{ESC}{ESC}"}, { Keys.J, "^8"}, { Keys.K, "^9^9"},
-                            { Keys.U, "^we"}, { Keys.I, "^wo"},
-                            { Keys.O, "^wq"}, { Keys.P, "^di"},
-                            { Keys.Y, "^66"}, { Keys.N, "^dc"},
-                            { Keys.F, "^/>open "},
+                            //{ Keys.H, "+{ESC}^5^5{ESC}{ESC}"},
+                            //{ Keys.H, "^8+{ESC}^9^9+{ESC}^we+{ESC}^wo+{ESC}^wq+{ESC}^di+{ESC}^dc+{ESC}%f+{ESC}"},
+                            //{ Keys.H, "+{ESC}"},
+                            { Keys.H, (Action)ClosePanel },
+
+                            { Keys.J, (Action)(() => OpenVsPanel("^8")) },    // Solution explorer
+                            { Keys.K, (Action)(() => OpenVsPanel("^we")) },   // Error list
+                            
+                            { Keys.U, (Action)(() => OpenVsPanel("^wo")) },   // Output
+                            { Keys.I, (Action)(() => OpenVsPanel("^wq")) },   // Symbols
+                            { Keys.O, (Action)(() => OpenVsPanel("%f")) },    // Find results
+
+                            { Keys.N, (Action)(() => OpenVsPanel("^dc")) },   // Call stack
+                            { Keys.M, (Action)(() => OpenVsPanel("^di")) },   // Immediate
+
+                            { Keys.P, (Action)(() => OpenVsPanel("^9^9")) },  // Class view
+                            { Keys.Y, (Action)(() => OpenVsPanel("^66")) },   // Configuration selector
+
+                            //{ Keys.F, "^/>open "},
         
-							// WiiU network shenanigans
-							//{ Keys.W, "{TAB}19216810{RIGHT}3{TAB}2552552550{TAB}19216810{RIGHT}1"},
+                            // WiiU network shenanigans
+                            //{ Keys.W, "{TAB}19216810{RIGHT}3{TAB}2552552550{TAB}19216810{RIGHT}1"},
                         }
                   },
 
@@ -656,20 +713,39 @@ namespace PinkyTwirl
                         new Dictionary<Keys, ShortcutAction>
                         {
                             { Keys.J, (Action)(() => ShiftWindow(-1,  0,  0,  0)) },
-							{ Keys.K, (Action)(() => ShiftWindow( 0,  1,  0,  0)) },
-							{ Keys.L, (Action)(() => ShiftWindow( 1,  0,  0,  0)) },
-							{ Keys.I, (Action)(() => ShiftWindow( 0, -1,  0,  0)) },
-							{ Keys.N, (Action)(() => ShiftWindow( 0,  0, -1,  0)) },
-							{ Keys.M, (Action)(() => ShiftWindow( 0,  0,  1,  0)) },
-							{ Keys.U, (Action)(() => ShiftWindow( 0,  0,  0, -1)) },
-							{ Keys.O, (Action)(() => ShiftWindow( 0,  0,  0,  1)) },
+                            { Keys.K, (Action)(() => ShiftWindow( 0,  1,  0,  0)) },
+                            { Keys.L, (Action)(() => ShiftWindow( 1,  0,  0,  0)) },
+                            { Keys.I, (Action)(() => ShiftWindow( 0, -1,  0,  0)) },
+                            { Keys.N, (Action)(() => ShiftWindow( 0,  0, -1,  0)) },
+                            { Keys.M, (Action)(() => ShiftWindow( 0,  0,  1,  0)) },
+                            { Keys.U, (Action)(() => ShiftWindow( 0,  0,  0, -1)) },
+                            { Keys.O, (Action)(() => ShiftWindow( 0,  0,  0,  1)) },
                         }
                   },
 
+                // CAPS-mapping: brackets
+                { 
+                    Keys.CapsLock,
+                        new Dictionary<Keys, ShortcutAction>    
+                        {
+                            { Keys.H , "{{}{}}{LEFT}"},                             // {}
+                            { Keys.J , "{(}{)}{LEFT}"},                             // ()
+                            { Keys.K , "{{}{}}{LEFT}{ENTER}{ENTER}{UP}{TAB}"},      // {\n}
+                            { Keys.L , "{[}{]}{LEFT}"},                             // []
+                            { Keys.OemSemicolon , "<>{LEFT}"},                      // <>
+                            { Keys.OemQuotes, "\"\"{LEFT}"},                        // ""
+
+                            { Keys.Y , "^x{{}{}}{LEFT}^v"},                         // {}
+                            { Keys.U , "^x{(}{)}{LEFT}^v"},                         // ()
+                            { Keys.I , "^x{{}{}}{LEFT}{ENTER}{ENTER}{UP}{TAB}^v"},  // {\n}
+                            { Keys.O , "^x{[}{]}{LEFT}^v"},                         // []
+                            { Keys.P , "^x<>{LEFT}^v"},                             // <>
+                            { Keys.OemOpenBrackets, "^x\"\"{LEFT}^v"},              // ""
+                        }
+                },
                 
             };
-
-
+            
             // Simple map, used for applications where you don"t want anything fancy.
             // Because we are overriding some default Alt behavior, we still need to implement that basic functionality (Alt-Tab and Alt-F4)
             var SimpleMap = new Dictionary<Keys, Dictionary<Keys, ShortcutAction>>()
@@ -690,7 +766,8 @@ namespace PinkyTwirl
             VisualStudioMap[MainFuncKey][Keys.B] = "^\'^{TAB}";
             VisualStudioMap[MainFuncKey][Keys.G] = "^mm"; // Collapse scope
             VisualStudioMap[MainFuncKey][Keys.F] = "^,"; // Go to definition
-            VisualStudioMap[MainFuncKey][Keys.D] = "^."; // Find all references
+            //VisualStudioMap[MainFuncKey][Keys.D] = "^."; // Find all references
+            VisualStudioMap[MainFuncKey][Keys.D] = (Action)(() => OpenVsPanel("^.")); // Find all references
             VisualStudioMap[MainFuncKey][Keys.S] = "^1"; // Rename
             //VisualStuioMap[MainFuncKey][Keys.G] = "{F3}" // Search again
             //VisualStuioMap[MainFuncKey][Keys.F] = "^22" // Incremental search
@@ -711,7 +788,7 @@ namespace PinkyTwirl
 
             // Command prompt. This overrides the tedious Alt-Space e p method for pasting with the default PinkyTwirl paste command Alt + W
             var CommandPromptMap = DeepCopy(DefaultMap);
-			CommandPromptMap[MainFuncKey][Keys.W] = (Action)CommandPrompt_Paste;
+            CommandPromptMap[MainFuncKey][Keys.W] = (Action)CommandPrompt_Paste;
             CommandPromptMap[Keys.D4][Keys.R] = "%{SPACE}es{ENTER}";
             CommandPromptMap[MainFuncKey][Keys.A] = "%{SPACE}ef{ENTER}";
             CommandPromptMap[MainFuncKey][Keys.F4] = "%{SPACE}c";
@@ -741,8 +818,8 @@ namespace PinkyTwirl
             var GitMap = DeepCopy(CommandPromptMap);
             GitMap[MainFuncKey][Keys.F] = (Action)Commit;
             GitMap[MainFuncKey][Keys.D] = (Action)GitToCloudberry;
-			GitMap[MainFuncKey][Keys.C] = "{HOME}^kgit config --global user.email \"jordan@pwnee.com\"";
-			GitMap[MainFuncKey][Keys.V] = "{HOME}^kgit config --global user.email \"jordan.efisher@gmail.com\"";
+            GitMap[MainFuncKey][Keys.C] = "{HOME}^kgit config --global user.email \"jordan@pwnee.com\"";
+            GitMap[MainFuncKey][Keys.V] = "{HOME}^kgit config --global user.email \"jordan.efisher@gmail.com\"";
             GitMap[Keys.D3][Keys.O] = "^k";
             GitMap[Keys.D3][Keys.U] = "^u";
             GitMap[Keys.D3][Keys.K] = "{HOME}^k";
@@ -771,27 +848,27 @@ namespace PinkyTwirl
                     });*/
 
             // Cloudberry game map
-            var CloudberryMap = DeepCopy(SimpleMap);
-            CloudberryMap[MainFuncKey][Keys.B] = (Action)DebugCloudberry;
+            var GameMap = DeepCopy(SimpleMap);
+            GameMap[MainFuncKey][Keys.B] = (Action)DebugCloudberry;
 
-			// DOTA map
-			var DotaMap = DeepCopy(DefaultMap);
-			DotaMap[MainFuncKey][Keys.A] = "G";
-			DotaMap[MainFuncKey][Keys.S] = "H";
-			DotaMap[MainFuncKey][Keys.D] = "J";
-			DotaMap[MainFuncKey][Keys.F] = "K";
-			
-			DotaMap[MainFuncKey][Keys.D1] = "%G";
-			DotaMap[MainFuncKey][Keys.D2] = "%H";
-			DotaMap[MainFuncKey][Keys.D3] = "%J";
-			DotaMap[MainFuncKey][Keys.Q] = "%K";
-			DotaMap[MainFuncKey][Keys.W] = "%L";
-			DotaMap[MainFuncKey][Keys.E] = "%M";
+            // DOTA map
+            var DotaMap = DeepCopy(DefaultMap);
+            DotaMap[MainFuncKey][Keys.A] = "G";
+            DotaMap[MainFuncKey][Keys.S] = "H";
+            DotaMap[MainFuncKey][Keys.D] = "J";
+            DotaMap[MainFuncKey][Keys.F] = "K";
 
-			// Excel
-			var ExcelMap = DeepCopy(DefaultMap);
-			ExcelMap[MainFuncKey][Keys.Enter] = "+ ^{+}";
-			ExcelMap[Keys.D3][Keys.K] = "+ ^-";
+            DotaMap[MainFuncKey][Keys.D1] = "%G";
+            DotaMap[MainFuncKey][Keys.D2] = "%H";
+            DotaMap[MainFuncKey][Keys.D3] = "%J";
+            DotaMap[MainFuncKey][Keys.Q] = "%K";
+            DotaMap[MainFuncKey][Keys.W] = "%L";
+            DotaMap[MainFuncKey][Keys.E] = "%M";
+
+            // Excel
+            var ExcelMap = DeepCopy(DefaultMap);
+            ExcelMap[MainFuncKey][Keys.Enter] = "+ ^{+}";
+            ExcelMap[Keys.D3][Keys.K] = "+ ^-";
 
 
             // Application mapping. Determines which application gets which dictionary of commands.
@@ -812,23 +889,24 @@ namespace PinkyTwirl
                 {"LEd", LEdMap},
                 //{"@", PhotoshopMap},
                 //{"Save", SaveAsMap},
-                {"Cloudberry Kingdom ", CloudberryMap},
-				{"DOTA", DotaMap},
-				{"Excel", ExcelMap},
+                {"Cloudberry Kingdom ", GameMap},
+                {"Pinnacle", GameMap},
+                {"DOTA", DotaMap},
+                {"Excel", ExcelMap},
                 {"__DEFAULT__", DefaultMap }
                 //{"/", WinSCP}
             };
         }
 
-		void CommandPrompt_Paste()
-		{
-			_Down(VirtualKeyCode.LMENU);
-			//_Press(VirtualKeyCode.SPACE);
-			SendKeys.Send(" ");
-			_Up(VirtualKeyCode.LMENU);
+        void CommandPrompt_Paste()
+        {
+            _Down(VirtualKeyCode.LMENU);
+            //_Press(VirtualKeyCode.SPACE);
+            SendKeys.Send(" ");
+            _Up(VirtualKeyCode.LMENU);
 
-			SendKeys.Send("ep");
-		}
+            SendKeys.Send("ep");
+        }
 
         void Commit()
         {
@@ -905,7 +983,7 @@ namespace PinkyTwirl
         {
             if (Skip) return;
 
-            if (e.KeyCode == Keys.W) Console.Write("");
+            //if (e.KeyCode == Keys.I) Console.Write("");
 
             try
             {
@@ -922,25 +1000,25 @@ namespace PinkyTwirl
                 }
 
                 // Convert tilde into Left Mouse Button.
-				//if (e.KeyCode == Keys.Oemtilde)
-				//{
-				//    if (!_IsKeyDown[(int)e.KeyCode])
-				//    {
-				//        Skip = true;
-				//        for (int i = 0; i < 50000; i++)
-				//        {
-				//            DoMouseClick_Down();
-				//            System.Threading.Thread.Sleep(5);
-				//            DoMouseClick_Up();
-				//        }
-				//        Skip = false;
-						
-				//        e.Handled = true; e.SuppressKeyPress = true;
-				//        _IsKeyDown[(int)e.KeyCode] = true;
-				//    }
+                //if (e.KeyCode == Keys.Oemtilde)
+                //{
+                //    if (!_IsKeyDown[(int)e.KeyCode])
+                //    {
+                //        Skip = true;
+                //        for (int i = 0; i < 50000; i++)
+                //        {
+                //            DoMouseClick_Down();
+                //            System.Threading.Thread.Sleep(5);
+                //            DoMouseClick_Up();
+                //        }
+                //        Skip = false;
+                        
+                //        e.Handled = true; e.SuppressKeyPress = true;
+                //        _IsKeyDown[(int)e.KeyCode] = true;
+                //    }
 
-				//    return;
-				//}
+                //    return;
+                //}
 
                 // Mark key as down.
                 _IsKeyDown[(int)e.KeyCode] = true;
@@ -993,7 +1071,7 @@ namespace PinkyTwirl
             {
                 Log("");
                 Log("Error uncaught!");
-				Log(exc.ToString());
+                Log(exc.ToString());
                 Log("");
             }
         }
@@ -1025,15 +1103,15 @@ namespace PinkyTwirl
                 _IsKeyDown[(int)e.KeyCode] = false;
 
                 // Convert tilde into Left Mouse Button.
-				//if (e.KeyCode == Keys.Oemtilde)
-				//{
-				//    Skip = true;
-				//    DoMouseClick_Up();
-				//    Skip = false;
+                //if (e.KeyCode == Keys.Oemtilde)
+                //{
+                //    Skip = true;
+                //    DoMouseClick_Up();
+                //    Skip = false;
                     
-				//    e.Handled = true; e.SuppressKeyPress = true;
-				//    return;
-				//}
+                //    e.Handled = true; e.SuppressKeyPress = true;
+                //    return;
+                //}
 
                 if (DoLog) Log(string.Format("KeyUp - {0}", e.KeyCode));
             }
