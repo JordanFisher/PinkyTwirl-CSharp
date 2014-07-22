@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-using System.Drawing;
+using System.Drawing;   
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -12,9 +12,10 @@ using Gma.UserActivityMonitor;
 
 using WindowsInput;
 
+#if !NO_GAME
 using input = Microsoft.Xna.Framework.Input;
-
 using PinkyGame;
+#endif
 
 namespace PinkyTwirl
 {
@@ -130,18 +131,23 @@ namespace PinkyTwirl
             TheForm = this;
             this.Visible = true;
 
+#if WITH_GAME
             FormClosed += PinkyTwirlForm_FormClosed;
+#endif
 
             InitializeComponent();
             InitDicts();
 
             this.ActiveCheckbox.Checked = true;
 
+#if WITH_GAME
             PinkyGame.Manager.OnRightJoystickMove += Manager_OnRightJoystickMove;
             PinkyGame.Manager.OnButtonPress += Manager_OnButtonPress;
             PinkyGame.Manager.OnButtonRelease += Manager_OnButtonRelease;
+#endif
         }
 
+#if WITH_GAME
         void Manager_OnButtonRelease(input.GamePadState obj)
         {
             if (input.Buttons.RightShoulder.Released())
@@ -194,6 +200,7 @@ namespace PinkyTwirl
         {
             PinkyGame.Manager.End();
         }
+#endif
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -1144,6 +1151,7 @@ namespace PinkyTwirl
 
         private void GamepadCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+#if WITH_GAME
             if (this.GamepadCheckbox.Checked)
             {
                 PinkyGame.Manager.Start();
@@ -1152,6 +1160,7 @@ namespace PinkyTwirl
             {
                 PinkyGame.Manager.End();
             }
+#endif
         }
     }
 }
