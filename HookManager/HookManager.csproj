@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <PublishUrl>http://localhost/GlobalHookDemo/</PublishUrl>
+    <PublishUrl>http://localhost/PinkyTwirl/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>

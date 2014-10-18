@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gma.GlobalHookDemo")]
+[assembly: AssemblyTitle("PinkyTwirl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Siemens and Partners")]
-[assembly: AssemblyProduct("Gma.GlobalHookDemo")]
-[assembly: AssemblyCopyright("Copyright © Siemens and Partners 2008")]
+[assembly: AssemblyCompany("Jordan Fisher")]
+[assembly: AssemblyProduct("PinkyTwirl")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f2132841-0c18-4146-af75-a30b73dffe0f")]
+[assembly: Guid("82f95b72-6ef9-41af-8def-b703e029da3a")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,7 +1,8 @@
 using System;
 using System.Windows.Forms;
 
-namespace Gma.UserActivityMonitor {
+namespace IoHooks
+{
 
     /// <summary>
     /// This class monitors all mouse activities globally (also outside of the application) 
