@@ -99,7 +99,7 @@ namespace PinkyTwirl
         [DllImport("user32.dll")]
         public static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
 
-        static string GetActiveWindowTitle()
+        static Tuple<string, string> GetActiveWindowTitle()
         {
             const int nChars = 256;
             IntPtr handle = IntPtr.Zero;
@@ -120,9 +120,9 @@ namespace PinkyTwirl
             }
 
             if (GetWindowText(handle, Buff, nChars) > 0)
-                return Buff.ToString() + description;
+                return new Tuple<string, string>(Buff.ToString(), description);
             else
-                return description;
+                return new Tuple<string, string>(description, description);;
         }
 
         static PinkyTwirlForm TheForm;
@@ -220,13 +220,10 @@ namespace PinkyTwirl
 
 
         bool[] _IsKeyDown = new bool[10000000];
-        //Dictionary<Keys, bool> IsKeyDown = new Dictionary<Keys, bool>(500);
 
-        Dictionary<string, Dictionary<Keys, Dictionary<Keys, ShortcutAction>>> WindowMap;
+        Dictionary<Tuple<string, string>, Dictionary<Keys, Dictionary<Keys, ShortcutAction>>> WindowMap;
         List<Keys> AmbiguousKeys = new List<Keys>(new Keys[] { Keys.D1, Keys.D2, Keys.D3, Keys.D4, Keys.F });
 
-        //bool SkipUp = false;
-        //bool SkipDown = false;
         ShortcutAction Down(VirtualKeyCode key)
         {
             return (Action)(() => _Down(key));
@@ -234,9 +231,6 @@ namespace PinkyTwirl
         void _Down(VirtualKeyCode key)
         {
             InputSimulator.SimulateKeyDown(key);
-            //SkipUp = true;
-            //SendKeys.Send(keys);
-            //SkipUp = false;
         }
         ShortcutAction Up(VirtualKeyCode key)
         {
@@ -245,9 +239,6 @@ namespace PinkyTwirl
         void _Up(VirtualKeyCode key)
         {
             InputSimulator.SimulateKeyUp(key);
-            //SkipUp = true;
-            //Sendkey.Send(key);
-            //SkipUp = false;
         }
         void _Press(VirtualKeyCode key)
         {
@@ -881,27 +872,24 @@ namespace PinkyTwirl
             // Application mapping. Determines which application gets which dictionary of commands.
             // We take the name of the current window and look to see if it contains any of the following strings.
             // If a match is found we use the associated dictionary. Matching works sequentially.
-            WindowMap = new Dictionary<string, Dictionary<Keys, Dictionary<Keys, ShortcutAction>>>
+            WindowMap = new Dictionary<Tuple<string, string>, Dictionary<Keys, Dictionary<Keys, ShortcutAction>>>
             {
-                {"Chrome", ChromeMap},
-                {"Microsoft Visual", VisualStudioMap},
-                {"POS Editor", SimpleMap},
-                {"Notepad++", NotepadPlusPlusMap},
-                {"Notepad", NotepadMap},
-                {"Wing IDE", WingIdeMap},
-                {"Command Prompt", CommandPromptMap},
-                {"MINGW", GitMap},
-                {"shell", CommandPromptMap},
-                {"IPython", CommandPromptMap},
-                {"LEd", LEdMap},
-                //{"@", PhotoshopMap},
-                //{"Save", SaveAsMap},
-                {"Cloudberry Kingdom ", GameMap},
-                {"Pinnacle", GameMap},
-                {"DOTA", DotaMap},
-                {"Excel", ExcelMap},
-                {"__DEFAULT__", DefaultMap }
-                //{"/", WinSCP}
+                { new Tuple<string, string>("Chrome",              null), ChromeMap},
+                { new Tuple<string, string>("Microsoft Visual",    null), VisualStudioMap},
+                { new Tuple<string, string>("POS Editor",          null), SimpleMap},
+                { new Tuple<string, string>("Notepad++",           null), NotepadPlusPlusMap},
+                { new Tuple<string, string>("Notepad",             null), NotepadMap},
+                { new Tuple<string, string>("Wing IDE",            null), WingIdeMap},
+                { new Tuple<string, string>("Command Prompt",      null), CommandPromptMap},
+                { new Tuple<string, string>("MINGW",               null), GitMap},
+                { new Tuple<string, string>("shell",               null), CommandPromptMap},
+                { new Tuple<string, string>("IPython",             null), CommandPromptMap},
+                { new Tuple<string, string>("LEd",                 null), LEdMap},
+                { new Tuple<string, string>("Cloudberry Kingdom ", null), GameMap},
+                { new Tuple<string, string>("DOTA",                null), DotaMap},
+                { new Tuple<string, string>("Excel",               null), ExcelMap},
+                { new Tuple<string, string>("__DEFAULT__",         null), DefaultMap},
+                { new Tuple<string, string>("Terracotta", "Terracotta" ), GameMap}
             };
         }
 
@@ -937,23 +925,6 @@ namespace PinkyTwirl
             Skip = false;
         }
         
-        /*
-'1' : {
-    'J' : BringVisualStudio}, {
-    'K' : BringChrome}, {
-    'I' : BringToDo}, {
-    'O' : BringCkToDo}, {
-    'U' : BringGit}, {
-    }}, {
-'Capital' : {
-    'J' : BringVisualStudio}, {
-    'K' : BringChrome}, {
-    'I' : BringToDo}, {
-    'O' : BringCkToDo}, {
-    'U' : BringGit}, {
-    }}, {
-*/
-
         static void Log(string str)
         {
             if (!DoLog) return;
@@ -970,7 +941,7 @@ namespace PinkyTwirl
             int Count = 0;
             foreach (var kv in WindowMap)
             {
-                if (name.Contains(kv.Key))
+                if (name.Item1.Contains(kv.Key.Item1) && (kv.Key.Item2 == null || name.Item2.Contains(kv.Key.Item2)))
                 {
                     if (DoLog) Log(Count.ToString());
                     return kv.Value;
@@ -978,7 +949,7 @@ namespace PinkyTwirl
                 Count++;
             }
 
-            return WindowMap["__DEFAULT__"];
+            return WindowMap[new Tuple<string, string>("__DEFAULT__", null)];
         }
 
         char HoldAmbiguous;
