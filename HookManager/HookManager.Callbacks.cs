@@ -4,9 +4,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace IoHooks
+namespace HookManager
 {
-    public static partial class HookManager
+    public static partial class IoHooks
     {
         /// <summary>
         /// The CallWndProc hook procedure is an application-defined or library-defined callback 

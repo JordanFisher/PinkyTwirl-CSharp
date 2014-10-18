@@ -1,14 +1,14 @@
 using System;
 using System.Windows.Forms;
 
-namespace IoHooks
+namespace HookManager
 {
 
     /// <summary>
     /// This class monitors all mouse activities globally (also outside of the application) 
     /// and provides appropriate events.
     /// </summary>
-    public static partial class HookManager
+    public static partial class IoHooks
     {
         //################################################################
         #region Mouse events

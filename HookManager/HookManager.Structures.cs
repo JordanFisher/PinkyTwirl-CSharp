@@ -1,9 +1,9 @@
 using System.Runtime.InteropServices;
 
-namespace IoHooks
+namespace HookManager
 {
 
-    public static partial class HookManager {
+    public static partial class IoHooks {
         /// <summary>
         /// The Point structure defines the X- and Y- coordinates of a point. 
         /// </summary>

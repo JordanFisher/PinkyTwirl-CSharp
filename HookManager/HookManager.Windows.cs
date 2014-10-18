@@ -1,9 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace IoHooks
+namespace HookManager
 {
-    public static partial class HookManager
+    public static partial class IoHooks
     {
         #region Windows constants
 

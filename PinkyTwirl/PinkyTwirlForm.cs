@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-using IoHooks;
+using HookManager;
 
 using WindowsInput;
 
@@ -208,14 +208,14 @@ namespace PinkyTwirl
 
         void Activate()
         {
-            HookManager.KeyDown += HookManager_KeyDown;
-            HookManager.KeyUp += HookManager_KeyUp;
+            IoHooks.KeyDown += HookManager_KeyDown;
+            IoHooks.KeyUp += HookManager_KeyUp;
         }
 
         void Deactivate()
         {
-            HookManager.KeyDown -= HookManager_KeyDown;
-            HookManager.KeyUp -= HookManager_KeyUp;
+            IoHooks.KeyDown -= HookManager_KeyDown;
+            IoHooks.KeyUp -= HookManager_KeyUp;
         }
 
 
@@ -392,7 +392,7 @@ namespace PinkyTwirl
         {
             if (CheckingToEndCtrlTab) return;
             KeyToEndOn = Key;
-            HookManager.KeyUp += CheckToEndCtrlTab;
+            IoHooks.KeyUp += CheckToEndCtrlTab;
             CheckingToEndCtrlTab = true;
         }
 
@@ -409,7 +409,7 @@ namespace PinkyTwirl
             Skip = false;
 
             if (CheckingToEndPanel) return;
-            HookManager.KeyUp += CheckToEndPanel;
+            IoHooks.KeyUp += CheckToEndPanel;
             CheckingToEndPanel = true;
         }
 
@@ -435,7 +435,7 @@ namespace PinkyTwirl
         {
             if (LastCommandAfterEnter == null)
             {
-                HookManager.KeyUp -= CheckToEndPanel;
+                IoHooks.KeyUp -= CheckToEndPanel;
                 CheckingToEndPanel = false;
             }
 
@@ -489,7 +489,7 @@ namespace PinkyTwirl
 
         private void EndCtrlTab()
         {
-            HookManager.KeyUp -= CheckToEndCtrlTab;
+            IoHooks.KeyUp -= CheckToEndCtrlTab;
             CheckingToEndCtrlTab = false;
 
             Skip = true;
