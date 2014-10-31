@@ -34,6 +34,16 @@ namespace PinkyTwirl
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hWnd, out Rectangle lpRect);
 
+        public static Point GetWindowTL()
+        {
+            IntPtr handle = GetForegroundWindow();
+
+            Rectangle rect = new Rectangle();
+            GetWindowRect(handle, out rect);
+
+            return new Point(rect.Left, rect.Top);
+        }
+
         public static void ShiftWindow(int x, int y, int width, int height)
         {
             IntPtr handle = GetForegroundWindow();

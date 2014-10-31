@@ -11,9 +11,6 @@ namespace PinkyTwirl
     public class Semantics : Functions
     {
         public static SemanticAction
-            // Nothing
-            Nothing = new SemanticAction(),
-            
             // Text navigation
             NavLeft         = Left,
             NavRight        = Right,
@@ -48,8 +45,8 @@ namespace PinkyTwirl
 
             // Text deletion
             DeleteLine         = Home | Home | Shift + End | Delete,
-            DeleteLeft         = Delete,
-            DeleteRight        = Backspace,
+            DeleteLeft         = Backspace,
+            DeleteRight        = Delete,
             DeleteUp           = NavUp   | DeleteLine,
             DeleteDown         = NavDown | DeleteLine,
             DeleteHome         = SelectHome | Delete,
@@ -70,17 +67,20 @@ namespace PinkyTwirl
             InsertLine     = Up | End | Enter,
 
             // Search/replace
-            Find           = Ctrl + F,
-            FindAndReplace = Ctrl + H,
+            Search    = Ctrl + F,
+            SearchAll = Ctrl + F,
+            Replace   = Ctrl + H,
 
             // State
             Undo           = Ctrl + Z,
             Redo           = Ctrl + Y,
 
             // Navigate
+            Focus          = Alt + D | F6 | F6,
             ProgramTab     = (Action)StartAltTab,
             FileTabLeft    = (Action)StartCtrlTab_Up,
             FileTabRight   = (Action)StartCtrlTab_Down,
+            Menu           = Alt,
 
             // File actions
             Save           = Ctrl + S,
@@ -101,22 +101,22 @@ namespace PinkyTwirl
             // Game
 
             // IDE
-            Debug                     = Nothing,
-            Comment                   = Nothing,
-            Uncomment                 = Nothing,
-            Rename                    = Nothing,
-            FindAllReferences         = Nothing,
-            GotoDefinition            = Nothing,
-            CollapseScope             = Nothing,
-            ViewProjectExplorer       = Nothing,
-            ViewErrorList             = Nothing,
-            ViewOutput                = Nothing,
-            ViewSymbols               = Nothing,
-            ViewFindResults           = Nothing,
-            ViewCallStack             = Nothing,
-            ViewInteractive           = Nothing,
-            ViewClasses               = Nothing,
-            ViewConfigurationSelector = Nothing;
+            Debug                     = 0,
+            Comment                   = 0,
+            Uncomment                 = 0,
+            Rename                    = 0,
+            FindAllReferences         = 0,
+            GotoDefinition            = 0,
+            CollapseScope             = 0,
+            ViewProjectExplorer       = 0,
+            ViewErrorList             = 0,
+            ViewOutput                = 0,
+            ViewSymbols               = 0,
+            ViewFindResults           = 0,
+            ViewCallStack             = 0,
+            ViewInteractive           = 0,
+            ViewClasses               = 0,
+            ViewConfigurationSelector = 0;
 
         public static void Initialize()
         {
@@ -128,18 +128,19 @@ namespace PinkyTwirl
                 Comment                   %= Ctrl + '[';
                 Uncomment                 %= Ctrl + ']';
                 Rename                    %= Ctrl + D1;
-                FindAllReferences         %= OpenVsPanelAction("^.");
+                SearchAll                 %= OpenVsPanelAction(Shift + Ctrl + F | Alt + F);
+                FindAllReferences         %= OpenVsPanelAction(Ctrl + Period);
                 GotoDefinition            %= Ctrl + Comma;
                 CollapseScope             %= Ctrl + M | M;
-                ViewProjectExplorer       %= OpenVsPanelAction("^8");
-                ViewErrorList             %= OpenVsPanelAction("^we");
-                ViewOutput                %= OpenVsPanelAction("^wo");
-                ViewSymbols               %= OpenVsPanelAction("^wq");
-                ViewFindResults           %= OpenVsPanelAction("%f");
-                ViewCallStack             %= OpenVsPanelAction("^dc");
-                ViewInteractive           %= OpenVsPanelAction("^di");
-                ViewClasses               %= OpenVsPanelAction("^99");
-                ViewConfigurationSelector %= OpenVsPanelAction("^66");
+                ViewProjectExplorer       %= OpenVsPanelAction(Ctrl + D8);
+                ViewErrorList             %= OpenVsPanelAction(Ctrl + W | E);
+                ViewOutput                %= OpenVsPanelAction(Ctrl + W | O);
+                ViewSymbols               %= OpenVsPanelAction(Ctrl + W | Q);
+                ViewFindResults           %= OpenVsPanelAction(Alt + F);
+                ViewCallStack             %= OpenVsPanelAction(Ctrl + D | C);
+                ViewInteractive           %= OpenVsPanelAction(Ctrl + D | I);
+                ViewClasses               %= OpenVsPanelAction(Ctrl + D9 | D9);
+                ViewConfigurationSelector %= OpenVsPanelAction(Ctrl + D6 | D6);
 
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;
@@ -158,6 +159,10 @@ namespace PinkyTwirl
                 Fullscreen %= F11;
 
             UsingContext(Contexts.Git);
+                Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;
+
+                Paste              %= Menu | E | P;
+
                 NavPreviousWord    %= Alt + B;
                 NavNextWord        %= Alt + F;
 

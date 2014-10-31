@@ -104,9 +104,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InputSimulator">
-      <HintPath>References\InputSimulator.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WITH_GAME'))">
       <SpecificVersion>False</SpecificVersion>
@@ -170,9 +167,17 @@
       <Project>{F52AA97E-180A-40ED-8F2B-09080171D6C7}</Project>
       <Name>HookManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InputSimulator\InputSimulator.csproj">
+      <Project>{3549cd6f-80f8-450f-b99e-cf0a736b1f2a}</Project>
+      <Name>InputSimulator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PinkyGame\PinkyGame\PinkyGame.csproj" Condition="$(DefineConstants.Contains('WITH_GAME'))">
       <Project>{648ec513-564d-48b5-aa3f-34bfa4391a41}</Project>
       <Name>PinkyGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsInput\WindowsInput.csproj">
+      <Project>{002f760b-4608-4473-80e0-b9c666ca1f88}</Project>
+      <Name>WindowsInput</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

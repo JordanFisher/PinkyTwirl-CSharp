@@ -18,7 +18,7 @@ namespace PinkyTwirl
                     Key.I |= NavUp;
                     Key.J |= NavLeft;
                     Key.K |= NavDown;
-                    Key.L |= NavRight;
+                    Key.L |= NavRight;                                                                          
 
                     Key.U |= NavHome;
                     Key.O |= NavEnd;
@@ -36,6 +36,16 @@ namespace PinkyTwirl
 
                     Key.D9 |= NavPageUp;
                     Key.D0 |= NavPageDown;
+
+                    Key.W |= Paste;
+                    Key.E |= Undo;
+                    Key.R |= Redo;
+
+                    Key.G |= Focus;
+                    
+                    Key.A |= Search;
+                    Key.Q |= Replace;
+                    Key.Z |= SearchAll;
 
                     Key.T |= Fullscreen;
 

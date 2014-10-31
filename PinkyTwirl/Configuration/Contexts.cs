@@ -11,15 +11,19 @@ namespace PinkyTwirl
     public static class Contexts
     {
         public static Context
-            Default           = new Context(),
             Simple            = new Context(),
+            Default           = new Context(),
+
             Browser           = new Context(Default),
             Ide               = new Context(Default),
             Game              = new Context(Simple),
 
+            CloudberryKingdom = new Context("Cloudberry Kingdom ", null,         Game),
+            Dota              = new Context("DOTA",                null,         Game),
+            Terracotta        = new Context("Terracotta",          "Terracotta", Game),
+
             Chrome            = new Context("Chrome",              null,         Browser),
             Firefox           = new Context("Firefox",             null,         Browser),
-            VisualStudio      = new Context("Microsoft Visual",    null,         Ide),
             NotepadPlusPlus   = new Context("Notepad++",           null,         Ide),
             Notepad           = new Context("Notepad",             null,         Default),
             WingIde           = new Context("Wing IDE",            null,         Ide),
@@ -30,9 +34,6 @@ namespace PinkyTwirl
             LEd               = new Context("LEd",                 null,         Ide),
             Excel             = new Context("Excel",               null,         Default),
             Photoshop         = new Context("Photoshop",           null,         Default),
-
-            CloudberryKingdom = new Context("Cloudberry Kingdom ", null,         Game),
-            Dota              = new Context("DOTA",                null,         Game),
-            Terracotta        = new Context("Terracotta",          "Terracotta", Game);
+            VisualStudio      = new Context("Microsoft Visual",    null,         Ide);
     }
 }

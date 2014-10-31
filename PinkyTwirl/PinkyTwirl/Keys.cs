@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 
 using WindowsInput;
+using WindowsInput.Native;
+
+using o = OtherWindowsInput;
 
 namespace PinkyTwirl
 {
@@ -85,6 +88,11 @@ namespace PinkyTwirl
             return new Key(val);
         }
 
+        public override string ToString()
+        {
+            return string.Format("({0})", Value.ToString());
+        }
+
         public static Key ApplyShift(Key k)
         {
             return k.Value | ShiftMod.Value;
@@ -148,7 +156,8 @@ namespace PinkyTwirl
         {
             get
             {
-                return InputSimulator.IsKeyDown(KeyCode);
+                return false;
+                //return InputSimulator.IsKeyDown(KeyCode);
             }
         }
 
@@ -160,14 +169,23 @@ namespace PinkyTwirl
             }
         }
 
+        public static bool ShiftModifier = false;
         public void DoDown()
         {
-            if (Value > 0) InputSimulator.SimulateKeyDown(KeyCode);
+            if (Value > 0)
+            {
+                //o.InputSimulator.SimulateKeyDown((o.VirtualKeyCode)KeyCode);
+                InputSimulator.Keys.KeyDown(KeyCode);
+            }
         }
             
         public void DoUp()
         {
-            if (Value > 0) InputSimulator.SimulateKeyUp(KeyCode);
+            if (Value > 0)
+            {
+                //o.InputSimulator.SimulateKeyUp((o.VirtualKeyCode)KeyCode); 
+                InputSimulator.Keys.KeyUp(KeyCode);
+            }
         }
 
         public void DoPress()

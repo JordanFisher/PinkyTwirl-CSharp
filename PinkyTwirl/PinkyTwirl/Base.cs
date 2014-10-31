@@ -28,9 +28,14 @@ namespace PinkyTwirl
                 var ActiveName = Info.Item1;
                 var ActiveDescription = Info.Item2;
 
-                foreach (var context in AllContexts)
+                for (int i = AllContexts.Count - 1; i >= 0; i--)
                 {
-                    if (ActiveName.Contains(context.WindowName) && (context.WindowDescription == null || ActiveDescription.Contains(context.WindowDescription)))
+                    var context = AllContexts[i];
+
+                    if (context.WindowName == null && context.WindowDescription == null) continue;
+
+                    if (context.WindowName        == null || ActiveName.Contains(context.WindowName) &&
+                       (context.WindowDescription == null || ActiveDescription.Contains(context.WindowDescription)))
                     {
                         return context;
                     }

@@ -11,6 +11,7 @@ using System.Text;
 using HookManager;
 
 using WindowsInput;
+using System.Windows.Forms;
 
 #if !NO_GAME
 using input = Microsoft.Xna.Framework.Input;
@@ -29,26 +30,33 @@ namespace PinkyTwirl
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
-        public static void MouseLeftClick()
+        public static void ClickConsoleMenu()
         {
-            DoLeftMouseClick_Down();
-            DoLeftMouseClick_Up();
+            var MenuPos = WindowFunctions.GetWindowTL();
+            MenuPos.X += 8;
+            MenuPos.Y += 8;
+
+            var HoldPos = Cursor.Position;
+            Cursor.Position = MenuPos;
+            MouseLeftClick();
+            Cursor.Position = HoldPos;
         }
 
-        public static void DoLeftMouseClick_Down()
+        public static void MouseLeftClick() { MouseLeftClick(Cursor.Position); }
+        public static void MouseLeftClick(Point pos)
         {
-            // Call the imported function with the cursor's current position
-            uint X = (uint)Cursor.Position.X;
-            uint Y = (uint)Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTDOWN, X, Y, 0, 0);
+            DoLeftMouseClick_Down(pos);
+            DoLeftMouseClick_Up(pos);
         }
 
-        public static void DoLeftMouseClick_Up()
+        public static void DoLeftMouseClick_Down(Point pos)
         {
-            // Call the imported function with the cursor's current position
-            uint X = (uint)Cursor.Position.X;
-            uint Y = (uint)Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, (uint)pos.X, (uint)pos.Y, 0, 0);
+        }
+
+        public static void DoLeftMouseClick_Up(Point pos)
+        {
+            mouse_event(MOUSEEVENTF_LEFTUP, (uint)pos.X, (uint)pos.Y, 0, 0);
         }
 
         public static void MouseRightClick()

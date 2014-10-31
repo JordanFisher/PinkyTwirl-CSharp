@@ -25,7 +25,7 @@ namespace PinkyTwirl
         public static void StartAltTab()
         {
             (LShift).DoUp();
-            DoDown(LMenu + Tab);
+            (LMenu + Tab).DoDown();
             StartCheckingToEndCtrlTab(Meta);
         }
 
@@ -43,6 +43,18 @@ namespace PinkyTwirl
             StartCheckingToEndCtrlTab(Key.D2);
         }
 
+        public static void TestMadness()
+        {
+            Key.LShift.DoDown();
+            Key.RShift.DoDown();
+            Key.Left.DoDown();
+            Key.LShift.DoUp();
+            Key.RShift.DoUp();
+            Key.Left.DoUp();
+
+            //(Shift + Left).Do();
+        }
+
         public static void StartCheckingToEndCtrlTab(Key Key)
         {
             if (CheckingToEndCtrlTab) return;
@@ -51,15 +63,15 @@ namespace PinkyTwirl
             CheckingToEndCtrlTab = true;
         }
 
-        public static Action OpenVsPanelAction(string command)
+        public static Action OpenVsPanelAction(SemanticAction command)
         { 
             return () => OpenVsPanel(command);
         }
 
         static bool CheckingToEndPanel = false;
-        static string LastPanelCommand = null;
-        static string LastCommandAfterEnter = null; // This is the "last command" used after a user presses enter. We need this because some VS panels switch to a seperate panel after pushing enter.
-        static void OpenVsPanel(string command, string command_after_enter = null)
+        static SemanticAction LastPanelCommand = null;
+        static SemanticAction LastCommandAfterEnter = null; // This is the "last command" used after a user presses enter. We need this because some VS panels switch to a seperate panel after pushing enter.
+        static void OpenVsPanel(SemanticAction command, SemanticAction command_after_enter = null)
         {
             LastPanelCommand = command;
             LastCommandAfterEnter = command_after_enter;
@@ -75,7 +87,7 @@ namespace PinkyTwirl
 
         public static void ClosePanel()
         {
-            LastPanelCommand = string.Empty;
+            LastPanelCommand = None;
             CloseLastPanel();
         }
 
@@ -98,7 +110,9 @@ namespace PinkyTwirl
             }
 
             App.Skip = true;
-            (LastPanelCommand | Shift + Escape).Do();
+            //LastPanelCommand.Do();
+            (Shift + Escape).Do();
+            //(LastPanelCommand | Shift + Escape).Do();
             App.Skip = false;
 
             LastPanelCommand = LastCommandAfterEnter;

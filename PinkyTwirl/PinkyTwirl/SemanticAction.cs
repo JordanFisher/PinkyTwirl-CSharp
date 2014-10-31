@@ -24,6 +24,7 @@ namespace PinkyTwirl
             }
 
             A.ContextualEvents[Base.CurrentContext] = (context, type) => B.Execute(context, type);
+            A.Representation += "[" + B.ToString() + "]";
 
             return A;
         }
@@ -31,6 +32,8 @@ namespace PinkyTwirl
         public static SemanticAction operator +(SemanticAction A, SemanticAction B)
         {
             var Sum = new SemanticAction();
+            Sum.Representation = A.ToString() + " + " + B.ToString();
+
             Action<Context, ExecuteType> action = (context, type) =>
             {
                 if (type == ExecuteType.Press)
@@ -43,7 +46,7 @@ namespace PinkyTwirl
 
                 if (type == ExecuteType.Down)
                 {
-                    A.Execute(context, ExecuteType.Down);
+                    A.Execute(context, ExecuteType.Down);   
                     B.Execute(context, ExecuteType.Down);
                 }
 
@@ -62,6 +65,8 @@ namespace PinkyTwirl
         public static SemanticAction operator |(SemanticAction A, SemanticAction B)
         {
             var Sum = new SemanticAction();
+            Sum.Representation = A.ToString() + " | " + B.ToString();
+
             Action<Context, ExecuteType> action = (context, type) =>
             {
                 if (type == ExecuteType.Press || type == ExecuteType.Down)
@@ -76,7 +81,7 @@ namespace PinkyTwirl
             return Sum;
         }
 
-        public static SemanticAction operator+(SemanticAction A, string s)
+        public static SemanticAction operator +(SemanticAction A, string s)
         {
             return A + new SemanticAction(s);
         }
@@ -88,12 +93,13 @@ namespace PinkyTwirl
 
         public static SemanticAction operator*(int RepeatNumber, SemanticAction k)
         {
-            var action = new SemanticAction();
-            
-            for (int i = 0; i <= RepeatNumber; i++)
-                action += k;
-            
-            return action;
+            return new SemanticAction(() =>
+            {
+                for (int i = 0; i <= RepeatNumber; i++)
+                {
+                    k.Execute();
+                }
+            });
         }
 
         public static SemanticAction operator|(SemanticAction A, string s)
@@ -116,6 +122,12 @@ namespace PinkyTwirl
             return new SemanticAction(val);
         }
 
+        public string Representation = string.Empty;
+        public override string ToString()
+        {
+            return Representation;
+        }
+
         public SemanticAction()
         {
 
@@ -130,9 +142,11 @@ namespace PinkyTwirl
         {
 
         }
-
+        
         public SemanticAction(Key k)
         {
+            Representation = k.ToString();
+
             Action<Context, ExecuteType> action = (context, type) =>
             {
                 if (type == ExecuteType.Press || type == ExecuteType.Down)
@@ -151,6 +165,8 @@ namespace PinkyTwirl
         
         public SemanticAction(Action ActionValue)
         {
+            Representation = "Action";
+
             Action<Context, ExecuteType> action = (context, type) =>
             {
                 if (type == ExecuteType.Press || type == ExecuteType.Down)
@@ -164,7 +180,10 @@ namespace PinkyTwirl
 
         public SemanticAction(string s)
         {
+            Representation = s;
+
             SemanticAction action = new SemanticAction();
+
             foreach (char c in s)
             {
                 action |= new SemanticAction(c);
