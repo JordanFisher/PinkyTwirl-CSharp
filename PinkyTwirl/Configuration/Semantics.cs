@@ -12,14 +12,14 @@ namespace PinkyTwirl
     {
         public static SemanticAction
             // Text navigation
-            NavLeft         = Left,
-            NavRight        = Right,
-            NavUp           = Up,
-            NavDown         = Down,
-            NavHome         = Home,
-            NavEnd          = End,
-            NavPageUp       = PageUp,
-            NavPageDown     = PageDown,
+            NavLeft         = None + Left,
+            NavRight        = None + Right,
+            NavUp           = None + Up,
+            NavDown         = None + Down,
+            NavHome         = None + Home,
+            NavEnd          = None + End,
+            NavPageUp       = None + PageUp,
+            NavPageDown     = None + PageDown,
             NavNextWord     = Ctrl + Right,
             NavPreviousWord = Ctrl + Left,
             NavBigUp        = 12 * Up,
@@ -45,8 +45,8 @@ namespace PinkyTwirl
 
             // Text deletion
             DeleteLine         = Home | Home | Shift + End | Delete,
-            DeleteLeft         = Backspace,
-            DeleteRight        = Delete,
+            DeleteLeft         = None + Backspace,
+            DeleteRight        = None + Delete,
             DeleteUp           = NavUp   | DeleteLine,
             DeleteDown         = NavDown | DeleteLine,
             DeleteHome         = SelectHome | Delete,
@@ -76,11 +76,12 @@ namespace PinkyTwirl
             Redo           = Ctrl + Y,
 
             // Navigate
-            Focus          = Alt + D | F6 | F6,
+            AddressBar     = Alt + D,
+            Focus          = AddressBar | F6 | F6 | F6,
             ProgramTab     = (Action)StartAltTab,
             FileTabLeft    = (Action)StartCtrlTab_Up,
             FileTabRight   = (Action)StartCtrlTab_Down,
-            Menu           = Alt,
+            Menu           = None + Alt,
 
             // File actions
             Save           = Ctrl + S,
@@ -90,15 +91,17 @@ namespace PinkyTwirl
             CloseAllBut    = Ctrl + Shift + Semicolon,
 
             // Brower
-            AddressBar     = Ctrl + L,
             NewTab         = Ctrl + T,
             CloseTab       = Ctrl + W,
 
             // Application
-            Fullscreen     = F11,
+            Fullscreen     = None + F11,
             EndApplication = Alt + F4,
 
             // Game
+
+            // git
+            Commit = DeleteLine | "git add . ; git commit -a",
 
             // IDE
             Debug                     = 0,
@@ -122,7 +125,7 @@ namespace PinkyTwirl
         {
             UsingContext(Contexts.VisualStudio);
                 Fullscreen                %= Shift + Alt + Enter;
-                Close                     %= Ctrl + W;
+                Close                     %= Ctrl + Semicolon;
 
                 Debug                     %= Ctrl + Backslash | "'" | Ctrl + Tab;
                 Comment                   %= Ctrl + '[';
@@ -148,6 +151,7 @@ namespace PinkyTwirl
 
             UsingContext(Contexts.Chrome);
                 AddressBar %= Ctrl + L;
+                Focus      %= AddressBar | F6 | F6;
                 NewTab     %= Ctrl + T;
                 CloseTab   %= Ctrl + W;
                 Fullscreen %= F11;
@@ -160,6 +164,7 @@ namespace PinkyTwirl
 
             UsingContext(Contexts.Git);
                 Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;
+                EndApplication     %= Menu | C;
 
                 Paste              %= Menu | E | P;
 
@@ -170,6 +175,7 @@ namespace PinkyTwirl
                 DeleteHome         %= Ctrl + U;
                 DeleteLine         %= Home + DeleteEnd;
                 DeletePreviousWord %= Ctrl + W;
+                DeleteNextWord     %= NavNextWord | DeletePreviousWord;
         }
     }
 }

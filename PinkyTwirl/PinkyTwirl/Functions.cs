@@ -43,18 +43,6 @@ namespace PinkyTwirl
             StartCheckingToEndCtrlTab(Key.D2);
         }
 
-        public static void TestMadness()
-        {
-            Key.LShift.DoDown();
-            Key.RShift.DoDown();
-            Key.Left.DoDown();
-            Key.LShift.DoUp();
-            Key.RShift.DoUp();
-            Key.Left.DoUp();
-
-            //(Shift + Left).Do();
-        }
-
         public static void StartCheckingToEndCtrlTab(Key Key)
         {
             if (CheckingToEndCtrlTab) return;
@@ -137,8 +125,43 @@ namespace PinkyTwirl
             CheckingToEndCtrlTab = false;
 
             App.Skip = true;
-            (LControl + LShift + LMenu + Tab).DoUp();
+            //(LControl + LShift + LMenu + Tab).DoUp();
+            ResetFunctionKeys();
             App.Skip = false;
+        }
+
+        public static void ResetFunctionKeys()
+        {
+            (LControl + LShift + LMenu + Tab).DoUp();
+
+            (
+                LControl | RControl |
+                LShift | RShift |
+                LMenu | RMenu |
+                D1 | D2 | D3 | D4 |
+                Tab | Space | Delete | Backspace | Escape |
+                LButton | RButton |
+                new SemanticAction(Meta)
+            ).DoUp();
+
+            PinkyTwirlApp.App.Reset();
+        }
+        
+        public static void StartGit2()
+        {
+            git_dir = null;
+            Thread thread = new Thread(() => {
+                GetCurExplorerDir();
+
+                if (git_dir != null)
+                {
+                    git_dir = Directory.GetParent(git_dir).FullName;
+
+                    StartGitProcess(git_dir);
+                    ResetFunctionKeys();
+                }
+            });
+            thread.Start();
         }
 
         public static void StartGit()
@@ -195,11 +218,6 @@ namespace PinkyTwirl
             {
                 Marshal.FinalReleaseComObject(o);
             }
-        }
-
-        public static void Commit()
-        {
-            (Semantics.DeleteLine | "git add . ; git commit -a").Do();
         }
 
         public static void SaveAsPNG()

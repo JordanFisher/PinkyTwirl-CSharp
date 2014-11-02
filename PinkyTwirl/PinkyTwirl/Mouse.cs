@@ -11,7 +11,6 @@ using System.Text;
 using HookManager;
 
 using WindowsInput;
-using System.Windows.Forms;
 
 #if !NO_GAME
 using input = Microsoft.Xna.Framework.Input;
@@ -32,13 +31,24 @@ namespace PinkyTwirl
 
         public static void ClickConsoleMenu()
         {
-            var MenuPos = WindowFunctions.GetWindowTL();
+            var TL = WindowFunctions.GetWindowTL();
+            
+            var MenuPos = TL;
             MenuPos.X += 8;
             MenuPos.Y += 8;
 
+            var AppBarPos = TL;
+            AppBarPos.X += 50;
+            AppBarPos.Y += 8;
+
             var HoldPos = Cursor.Position;
+
+            Cursor.Position = AppBarPos;
+            MouseLeftClick();
+
             Cursor.Position = MenuPos;
             MouseLeftClick();
+
             Cursor.Position = HoldPos;
         }
 

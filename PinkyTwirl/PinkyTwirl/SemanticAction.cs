@@ -23,7 +23,7 @@ namespace PinkyTwirl
                 A.ContextualEvents.Add(Base.CurrentContext, null);
             }
 
-            A.ContextualEvents[Base.CurrentContext] = (context, type) => B.Execute(context, type);
+            A.ContextualEvents[Base.CurrentContext] = (context, type) => B.Execute(type);
             A.Representation += "[" + B.ToString() + "]";
 
             return A;
@@ -38,22 +38,22 @@ namespace PinkyTwirl
             {
                 if (type == ExecuteType.Press)
                 {
-                    A.Execute(context, ExecuteType.Down);
-                    B.Execute(context, ExecuteType.Down);
-                    A.Execute(context, ExecuteType.Up);
-                    B.Execute(context, ExecuteType.Up);
+                    A.Execute(ExecuteType.Down);
+                    B.Execute(ExecuteType.Down);
+                    A.Execute(ExecuteType.Up);
+                    B.Execute(ExecuteType.Up);
                 }
 
                 if (type == ExecuteType.Down)
                 {
-                    A.Execute(context, ExecuteType.Down);   
-                    B.Execute(context, ExecuteType.Down);
+                    A.Execute(ExecuteType.Down);   
+                    B.Execute(ExecuteType.Down);
                 }
 
                 if (type == ExecuteType.Up)
                 {
-                    A.Execute(context, ExecuteType.Up);
-                    B.Execute(context, ExecuteType.Up);
+                    A.Execute(ExecuteType.Up);
+                    B.Execute(ExecuteType.Up);
                 }
             };
 
@@ -71,8 +71,8 @@ namespace PinkyTwirl
             {
                 if (type == ExecuteType.Press || type == ExecuteType.Down)
                 {
-                    A.Execute(context, ExecuteType.Press);
-                    B.Execute(context, ExecuteType.Press);
+                    A.Execute(ExecuteType.Press);
+                    B.Execute(ExecuteType.Press);
                 }
             };
 
@@ -182,12 +182,15 @@ namespace PinkyTwirl
         {
             Representation = s;
 
-            SemanticAction action = new SemanticAction();
-
-            foreach (char c in s)
+            Action<Context, ExecuteType> action = (context, type) =>
             {
-                action |= new SemanticAction(c);
-            }
+                if (type == ExecuteType.Press || type == ExecuteType.Down)
+                {
+                    InputSimulator.Keys.TextEntry(s);
+                }
+            };
+
+            ContextualEvents.Add(Contexts.Default, action);
         }
 
         public void DoDown()

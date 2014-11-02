@@ -42,6 +42,7 @@ namespace PinkyTwirl
                     Key.R |= Redo;
 
                     Key.G |= Focus;
+                    Key.F |= AddressBar;
                     
                     Key.A |= Search;
                     Key.Q |= Replace;
@@ -80,7 +81,7 @@ namespace PinkyTwirl
                 Chord(Key.D3);
                     Key.I |= DeleteUp;
                     Key.J |= DeleteLeft;
-                    Key.K |= DeleteDown;
+                    Key.K |= DeleteLine;
                     Key.L |= DeleteRight;
 
                     Key.U |= DeleteHome;
@@ -106,7 +107,7 @@ namespace PinkyTwirl
                     Key.I |= Save;
 
                 Chord(Meta, Key.Space);
-                    Key.G |= (Action)StartGit;
+                    Key.G |= (Action)StartGit2;
 
                 Chord(Key.CapsLock);
                     Key.H            |= "{}" | Left;                                          // {}
@@ -171,9 +172,9 @@ namespace PinkyTwirl
             // Git map
             UsingContext(Contexts.Git, CopyParentContext:true);
                 Chord(Meta);
-                    Key.F |= (Action)Commit;
-                    Key.C |= DeleteLine + "git config --global user.email \"jordan@pwnee.com\"";
-                    Key.V |= DeleteLine + "git config --global user.email \"jordan.efisher@gmail.com\"";
+                    Key.F |= Commit;
+                    Key.C |= DeleteLine | "git config --global user.email \"jordan@pwnee.com\"";
+                    Key.V |= DeleteLine | "git config --global user.email \"jordan.efisher@gmail.com\"";
 
             // Photoshop mapu
             UsingContext(Contexts.Photoshop, CopyParentContext:true);

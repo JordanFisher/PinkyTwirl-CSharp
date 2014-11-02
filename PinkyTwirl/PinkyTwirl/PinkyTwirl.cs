@@ -20,36 +20,20 @@ namespace PinkyTwirl
 
         public void HookManager_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Skip)
-            {
-                if (DoLog) Log("Skip Down " + e.Key().ToString());
-                return;
-            }
-
-            //Skip = true;
-            //Base.CurrentContext = Base.ActiveContext;
-            ////InputSimulator.Keys.KeyDown(WindowsInput.Native.VirtualKeyCode.CONTROL);
-            ////InputSimulator.Keys.KeyDown(WindowsInput.Native.VirtualKeyCode.VK_8);
-            ////InputSimulator.Keys.KeyUp(WindowsInput.Native.VirtualKeyCode.CONTROL);
-            ////InputSimulator.Keys.KeyUp(WindowsInput.Native.VirtualKeyCode.VK_8);
-            ////D8.Do();
-            ////(Ctrl + D8).Do();
-            //Semantics.ViewProjectExplorer.Do();
-            //Skip = false;
-            //Suppress(e);
-            //return;
-            //Semantics.ViewProjectExplorer.Do();
-
-            //if (e.KeyCode == Keys.I) Console.Write("");
-
-            if (PressedKeys.Count > 0)
-            {
-                var Chord = PressedKeys.Aggregate("", (s, key) => s + key.Value + ',');
-                if (DoLog) Log("Chord " + Chord + PressedKeys.Count.ToString());
-            }
-
             try
             {
+                if (Skip)
+                {
+                    if (DoLog) Log("Skip Down " + e.Key().ToString());
+                    return;
+                }
+
+                if (PressedKeys.Count > 0)
+                {
+                    var Chord = PressedKeys.Aggregate("", (s, key) => s + key.Value + ',');
+                    if (DoLog) Log("Chord " + Chord + PressedKeys.Count.ToString());
+                }
+
                 // Shift-Shift = CapsLock
                 if (CheckForShiftShift(e)) return;
 
@@ -58,7 +42,7 @@ namespace PinkyTwirl
                 if (DoLog) Log(string.Format("KeyDown {0} ({1}) {2}{3}{4}", e.KeyCode, (char)e.KeyValue,
                     Key.Shift.IsDown ? " Shift" : "",
                     Key.Alt.IsDown   ? " Alt"   : "",
-                    Key.Ctrl.IsDown  ? " Cntrl" : ""));
+                    Key.Ctrl.IsDown  ? " Ctrl" : ""));
 
                 KeyMap CurrentMap = null;
                 if (HoldContext == null)
@@ -139,28 +123,33 @@ namespace PinkyTwirl
 
         public void HookManager_KeyUp(object sender, KeyEventArgs e)
         {
-            if (Skip)
-            {
-                if (DoLog) Log("Skip Up " + e.Key().ToString());
-                return;
-            }
-
             try
             {
                 if (Ambiguous && PressedKeys.Contains(e.Key()))
                 {
+                    Ambiguous = false;
+
                     Skip = true;
                     e.Key().DoPress();
                     Skip = false;
-
-                    Ambiguous = false;
                 }
 
                 PressedKeys.RemoveAll(match => match == e.Key());
-                
+
                 if (PressedKeys.Count == 0)
                 {
                     Reset();
+                }
+
+                if (Skip)
+                {
+                    if (DoLog) Log("Skip Up " + e.Key().ToString());
+                    return;
+                }
+
+                if (e.Key() == Meta)
+                {
+                    Functions.ResetFunctionKeys();
                 }
             }
             catch (Exception exc)
@@ -169,25 +158,12 @@ namespace PinkyTwirl
             }
         }
 
-        private void SendAmbiguousKeys()
-        {
-            if (PressedKeys.Count > 0)
-            {
-                Skip = true;
-                foreach (var k in PressedKeys)
-                {
-                    k.DoPress();
-                }
-                Skip = false;
-            }
-        }
-
         private static void Suppress(KeyEventArgs e)
         {
             e.Handled = true; e.SuppressKeyPress = true;
         }
 
-        private void Reset()
+        public void Reset()
         {
             PressedKeys.Clear();
             HoldContext = null;

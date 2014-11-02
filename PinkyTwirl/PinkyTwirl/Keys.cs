@@ -156,8 +156,8 @@ namespace PinkyTwirl
         {
             get
             {
-                return false;
-                //return InputSimulator.IsKeyDown(KeyCode);
+                //return false;
+                return o.InputSimulator.IsKeyDown((o.VirtualKeyCode)KeyCode);
             }
         }
 
