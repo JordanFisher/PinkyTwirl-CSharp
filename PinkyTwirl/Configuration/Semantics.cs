@@ -119,7 +119,8 @@ namespace PinkyTwirl
             ViewCallStack             = 0,
             ViewInteractive           = 0,
             ViewClasses               = 0,
-            ViewConfigurationSelector = 0;
+            ViewConfigurationSelector = 0,
+            CloseAllTools             = 0;
 
         public static void Initialize()
         {
@@ -131,19 +132,21 @@ namespace PinkyTwirl
                 Comment                   %= Ctrl + '[';
                 Uncomment                 %= Ctrl + ']';
                 Rename                    %= Ctrl + D1;
-                SearchAll                 %= OpenVsPanelAction(Shift + Ctrl + F | Alt + F);
-                FindAllReferences         %= OpenVsPanelAction(Ctrl + Period);
+                SearchAll                 %= Shift + Ctrl + F | Alt + F;
+                FindAllReferences         %= Ctrl + Period;
                 GotoDefinition            %= Ctrl + Comma;
                 CollapseScope             %= Ctrl + M | M;
-                ViewProjectExplorer       %= OpenVsPanelAction(Ctrl + D8);
-                ViewErrorList             %= OpenVsPanelAction(Ctrl + W | E);
-                ViewOutput                %= OpenVsPanelAction(Ctrl + W | O);
-                ViewSymbols               %= OpenVsPanelAction(Ctrl + W | Q);
-                ViewFindResults           %= OpenVsPanelAction(Alt + F);
-                ViewCallStack             %= OpenVsPanelAction(Ctrl + D | C);
-                ViewInteractive           %= OpenVsPanelAction(Ctrl + D | I);
-                ViewClasses               %= OpenVsPanelAction(Ctrl + D9 | D9);
-                ViewConfigurationSelector %= OpenVsPanelAction(Ctrl + D6 | D6);
+                ViewProjectExplorer       %= Ctrl + D8;
+                ViewErrorList             %= Ctrl + W | E;
+                ViewOutput                %= Ctrl + W | O;
+                ViewSymbols               %= Ctrl + W | Q;
+                ViewFindResults           %= Alt + F;
+                ViewCallStack             %= Ctrl + D | C;
+                ViewInteractive           %= Ctrl + D | I;
+                ViewClasses               %= Ctrl + D9 | D9;
+                ViewConfigurationSelector %= Ctrl + D6 | D6;
+
+                CloseAllTools             %= Alt + Q;
 
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;

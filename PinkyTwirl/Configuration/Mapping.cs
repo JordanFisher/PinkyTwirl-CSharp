@@ -143,7 +143,7 @@ namespace PinkyTwirl
                     Key.S |= Rename;
 
                 Chord(Meta, Key.Space);
-                    Key.H |= (Action)ClosePanel;
+                    Key.H |= CloseAllTools;
 
                     Key.J |= ViewProjectExplorer;
                     Key.K |= ViewErrorList;

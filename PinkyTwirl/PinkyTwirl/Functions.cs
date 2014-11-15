@@ -51,61 +51,6 @@ namespace PinkyTwirl
             CheckingToEndCtrlTab = true;
         }
 
-        public static Action OpenVsPanelAction(SemanticAction command)
-        { 
-            return () => OpenVsPanel(command);
-        }
-
-        static bool CheckingToEndPanel = false;
-        static SemanticAction LastPanelCommand = null;
-        static SemanticAction LastCommandAfterEnter = null; // This is the "last command" used after a user presses enter. We need this because some VS panels switch to a seperate panel after pushing enter.
-        static void OpenVsPanel(SemanticAction command, SemanticAction command_after_enter = null)
-        {
-            LastPanelCommand = command;
-            LastCommandAfterEnter = command_after_enter;
-
-            App.Skip = true;
-            (Shift + Escape | LastPanelCommand).Do();
-            App.Skip = false;
-
-            if (CheckingToEndPanel) return;
-            IoHooks.KeyUp += CheckToEndPanel;
-            CheckingToEndPanel = true;
-        }
-
-        public static void ClosePanel()
-        {
-            LastPanelCommand = None;
-            CloseLastPanel();
-        }
-
-        static void CheckToEndPanel(object sender, KeyEventArgs e)
-        {
-            if (App.Skip) return;
-
-            if (e.KeyCode == Key.Enter || e.KeyCode == Key.Escape)
-            {
-                CloseLastPanel();
-            }
-        }
-
-        static void CloseLastPanel()
-        {
-            if (LastCommandAfterEnter == null)
-            {
-                IoHooks.KeyUp -= CheckToEndPanel;
-                CheckingToEndPanel = false;
-            }
-
-            App.Skip = true;
-            //LastPanelCommand.Do();
-            (Shift + Escape).Do();
-            //(LastPanelCommand | Shift + Escape).Do();
-            App.Skip = false;
-
-            LastPanelCommand = LastCommandAfterEnter;
-            LastCommandAfterEnter = null;
-        }
 
         static bool CheckingToEndCtrlTab = false;
         static Key KeyToEndOn;
