@@ -157,8 +157,8 @@ namespace PinkyTwirl
 
             // Command prompt. This overrides the tedious Alt-Space e p method for pasting with the default PinkyTwirl paste command Alt + W
             UsingContext(Contexts.CommandPrompt, CopyParentContext:true);
-                Chord(Meta);
-                    // Context menu access requires pressing Alt + Space, which doesn't seem to work.
+                Chord(Meta, Key.Space);
+                    Key.H |= ClearScreen;
 
             // Browsers
             UsingContext(Contexts.Browser, CopyParentContext:true);

@@ -100,6 +100,9 @@ namespace PinkyTwirl
 
             // Game
 
+            // Console
+            ClearScreen = 0,
+
             // git
             Commit = DeleteLine | "git add . ; git commit -a",
 
@@ -165,9 +168,28 @@ namespace PinkyTwirl
                 CloseTab   %= Ctrl + W;
                 Fullscreen %= F11;
 
+            UsingContext(Contexts.CommandPrompt);
+                Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;
+                EndApplication     %= Menu | C;
+
+                ClearScreen        %= DeleteLine | "cls" | Enter;
+
+                Paste              %= Menu | E | P;
+
+                NavPreviousWord    %= Ctrl + Left;
+                NavNextWord        %= Ctrl + Right;
+
+                DeleteEnd          %= Ctrl + End;
+                DeleteHome         %= Ctrl + Home;
+                DeleteLine         %= Escape;
+                DeletePreviousWord %= Backspace;
+                DeleteNextWord     %= Delete;
+
             UsingContext(Contexts.Git);
                 Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;
                 EndApplication     %= Menu | C;
+
+                ClearScreen        %= Ctrl + L;
 
                 Paste              %= Menu | E | P;
 
