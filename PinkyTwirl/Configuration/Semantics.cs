@@ -114,6 +114,7 @@ namespace PinkyTwirl
             FindAllReferences         = 0,
             GotoDefinition            = 0,
             CollapseScope             = 0,
+            ExpandScope               = 0,
             ViewProjectExplorer       = 0,
             ViewErrorList             = 0,
             ViewOutput                = 0,
@@ -131,7 +132,7 @@ namespace PinkyTwirl
                 Fullscreen                %= Shift + Alt + Enter;
                 Close                     %= Ctrl + Semicolon;
 
-                Debug                     %= Ctrl + Backslash | "'" | Ctrl + Tab;
+                Debug                     %= Ctrl + Quotes | Ctrl + Tab;
                 Comment                   %= Ctrl + '[';
                 Uncomment                 %= Ctrl + ']';
                 Rename                    %= Ctrl + D1;
@@ -139,6 +140,7 @@ namespace PinkyTwirl
                 FindAllReferences         %= Ctrl + Period;
                 GotoDefinition            %= Ctrl + Comma;
                 CollapseScope             %= Ctrl + M | M;
+                ExpandScope               %= CollapseScope;
                 ViewProjectExplorer       %= Ctrl + D8;
                 ViewErrorList             %= Ctrl + W | E;
                 ViewOutput                %= Ctrl + W | O;
@@ -150,6 +152,17 @@ namespace PinkyTwirl
                 ViewConfigurationSelector %= Ctrl + D6 | D6;
 
                 CloseAllTools             %= Alt + Q;
+
+            UsingContext(Contexts.NotepadPlusPlus);
+                Fullscreen                %= F11;
+                Close                     %= Ctrl + W;
+
+                Comment                   %= Ctrl + K;
+                Uncomment                 %= Ctrl + Shift + K;
+                SearchAll                 %= Ctrl + F;
+                GotoDefinition            %= Ctrl + G;
+                CollapseScope             %= Ctrl + Alt + F;
+                ExpandScope               %= Shift + Ctrl + Alt + F;
 
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;

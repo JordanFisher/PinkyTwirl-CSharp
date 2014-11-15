@@ -24,8 +24,8 @@ namespace PinkyTwirl
 
             Chrome            = new Context("Chrome",              null,         Browser),
             Firefox           = new Context("Firefox",             null,         Browser),
-            NotepadPlusPlus   = new Context("Notepad++",           null,         Ide),
             Notepad           = new Context("Notepad",             null,         Default),
+            NotepadPlusPlus   = new Context("Notepad++",           null,         Ide),
             WingIde           = new Context("Wing IDE",            null,         Ide),
             CommandPrompt     = new Context("Command Prompt",      null,         Default),
             MinGW             = new Context("MINGW",               null,         CommandPrompt),

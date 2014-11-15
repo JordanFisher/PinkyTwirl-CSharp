@@ -138,6 +138,7 @@ namespace PinkyTwirl
 
                     Key.B |= Debug;
                     Key.G |= CollapseScope;
+                    Key.V |= ExpandScope;
                     Key.F |= GotoDefinition;
                     Key.D |= FindAllReferences;
                     Key.S |= Rename;
