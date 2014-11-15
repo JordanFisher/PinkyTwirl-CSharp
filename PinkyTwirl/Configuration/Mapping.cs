@@ -185,7 +185,10 @@ namespace PinkyTwirl
             // Game map
             UsingContext(Contexts.Game, CopyParentContext:true);
                 Chord(Meta);
-                    Key.B |= Debug;
+                    Key.B   |= Debug;
+
+                    Key.Tab |= ProgramTab;
+                    Key.F4  |= EndApplication;
         }
     }
 }

@@ -170,7 +170,7 @@ namespace PinkyTwirl
 
             UsingContext(Contexts.Chrome);
                 AddressBar %= Ctrl + L;
-                Focus      %= AddressBar | F6 | F6;
+                Focus      %= AddressBar | F6;
                 NewTab     %= Ctrl + T;
                 CloseTab   %= Ctrl + W;
                 Fullscreen %= F11;
@@ -214,6 +214,9 @@ namespace PinkyTwirl
                 DeleteLine         %= Home + DeleteEnd;
                 DeletePreviousWord %= Ctrl + W;
                 DeleteNextWord     %= NavNextWord | DeletePreviousWord;
+
+            UsingContext(Contexts.Game);
+                Debug              %= Alt + Tab | Ctrl + Quotes | Ctrl + Tab;
         }
     }
 }

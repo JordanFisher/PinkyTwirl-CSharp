@@ -56,7 +56,7 @@ namespace PinkyTwirl
                 }
                 else
                 {
-                    if (DoLog) Log(string.Format("CurrentContext is {0}", HoldContext.WindowName));
+                    if (DoLog) Log(string.Format("CurrentContext is {0}", HoldContext));
 
                     CurrentMap = Base.GetContextMap(HoldContext);
 

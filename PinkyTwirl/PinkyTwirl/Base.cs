@@ -28,16 +28,31 @@ namespace PinkyTwirl
                 var ActiveName = Info.Item1;
                 var ActiveDescription = Info.Item2;
 
+                // Try to match on description only first
+                if (ActiveDescription != null)
+                for (int i = AllContexts.Count - 1; i >= 0; i--)
+                {
+                    var context = AllContexts[i];
+
+                    if (context.WindowDescription == null || context.WindowDescription.Length == 0) continue;
+
+                    if (ActiveDescription.Contains(context.WindowDescription))
+                    {
+                        return context;
+                    }
+                }
+
+                // Otherwise try to match on both name and description
                 for (int i = AllContexts.Count - 1; i >= 0; i--)
                 {
                     var context = AllContexts[i];
 
                     if (context.WindowName == null && context.WindowDescription == null) continue;
 
-                    if (context.WindowName        == null || ActiveName.Contains(context.WindowName) &&
-                       (context.WindowDescription == null || ActiveDescription.Contains(context.WindowDescription)))
+                    if ((context.WindowName        == null || context.WindowName.Length        == 0 || context.WindowName.Length        != 0 && ActiveName.Contains(context.WindowName)) &&
+                        (context.WindowDescription == null || context.WindowDescription.Length == 0 || context.WindowDescription.Length != 0 && ActiveDescription.Contains(context.WindowDescription)))
                     {
-                        return context;
+                         return context;
                     }
                 }
 
