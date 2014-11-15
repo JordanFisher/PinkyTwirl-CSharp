@@ -31,7 +31,7 @@ namespace PinkyTwirl
                 if (PressedKeys.Count > 0)
                 {
                     var Chord = PressedKeys.Aggregate("", (s, key) => s + key.Value + ',');
-                    if (DoLog) Log("Chord " + Chord + PressedKeys.Count.ToString());
+                    if (DoLog) Log(string.Format("Chord is {0} {1}.  {2} keys total.", Chord, e.Key().Value, PressedKeys.Count + 1));
                 }
 
                 // Shift-Shift = CapsLock

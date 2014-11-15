@@ -133,8 +133,8 @@ namespace PinkyTwirl
                 Close                     %= Ctrl + Semicolon;
 
                 Debug                     %= Ctrl + Quotes | Ctrl + Tab;
-                Comment                   %= Ctrl + '[';
-                Uncomment                 %= Ctrl + ']';
+                Comment                   %= Ctrl + OpenBrackets;
+                Uncomment                 %= Ctrl + CloseBrackets;
                 Rename                    %= Ctrl + D1;
                 SearchAll                 %= Shift + Ctrl + F | Alt + F;
                 FindAllReferences         %= Ctrl + Period;
