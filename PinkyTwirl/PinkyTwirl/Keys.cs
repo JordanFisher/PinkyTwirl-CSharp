@@ -183,7 +183,7 @@ namespace PinkyTwirl
         {
             if (Value > 0)
             {
-                //o.InputSimulator.SimulateKeyUp((o.VirtualKeyCode)KeyCode); 
+                o.InputSimulator.SimulateKeyUp((o.VirtualKeyCode)KeyCode); 
                 InputSimulator.Keys.KeyUp(KeyCode);
             }
         }

@@ -125,6 +125,23 @@ namespace PinkyTwirl
         {
             try
             {
+                //Log("RMenu down? " + HookManager.IoHooks.GetKeyState((int)WindowsInput.Native.VirtualKeyCode.RMENU).ToString());
+                //Log("LMenu down? " + HookManager.IoHooks.GetKeyState((int)WindowsInput.Native.VirtualKeyCode.LMENU).ToString());
+                //Log("Menu down? " + HookManager.IoHooks.GetKeyState((int)WindowsInput.Native.VirtualKeyCode.MENU).ToString());
+                //Log("");
+
+                // This is a hack because sometimes during alt-tab the virtual alt key gets stuck down. So... we just force it back up at every opportunity. =(
+                //if (e.Key() == Meta)
+                //{
+                //    Skip = true;
+                //    (LControl | LShift | LMenu | RControl | RShift | RMenu | Alt | Tab | AltMod).DoUp();
+                //    OtherWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.RMENU);
+                //    OtherWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.LMENU);
+                //    // alt + tab
+                //    //(LMenu + Tab).DoUp();
+                //    Skip = false;
+                //}
+
                 if (Ambiguous && PressedKeys.Contains(e.Key()))
                 {
                     Ambiguous = false;

@@ -303,7 +303,7 @@ namespace HookManager
         /// </returns>
         /// <remarks>http://msdn.microsoft.com/en-us/library/ms646301.aspx</remarks>
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        private static extern short GetKeyState(int vKey);
+        public static extern short GetKeyState(int vKey);
 
         #endregion
     }

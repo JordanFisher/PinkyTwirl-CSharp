@@ -126,7 +126,7 @@ namespace PinkyTwirl
 
             // Simple map, used for applications where you don"t want anything fancy.
             // Because we are overriding some default Alt behavior, we still need to implement that basic functionality (Alt-Tab and Alt-F4)
-            UsingContext(Contexts.Simple, CopyParentContext:true);
+            UsingContext(Contexts.Simple, CopyParentContext:false);
                 Chord(Meta);
                     Key.F4 |= EndApplication;
 
@@ -185,10 +185,10 @@ namespace PinkyTwirl
             // Game map
             UsingContext(Contexts.Game, CopyParentContext:true);
                 Chord(Meta);
-                    Key.B   |= Debug;
-
                     Key.Tab |= ProgramTab;
                     Key.F4  |= EndApplication;
+
+                    Key.B   |= Debug;
         }
     }
 }
