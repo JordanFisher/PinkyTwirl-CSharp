@@ -151,7 +151,7 @@ namespace PinkyTwirl
                 ViewClasses               %= Ctrl + D9 | D9;
                 ViewConfigurationSelector %= Ctrl + D6 | D6;
 
-                CloseAllTools             %= Alt + Q;
+                CloseAllTools             %= Escape | Ctrl + M | D1;
 
             UsingContext(Contexts.NotepadPlusPlus);
                 Fullscreen                %= F11;
@@ -163,6 +163,13 @@ namespace PinkyTwirl
                 GotoDefinition            %= Ctrl + G;
                 CollapseScope             %= Ctrl + Alt + F;
                 ExpandScope               %= Shift + Ctrl + Alt + F;
+
+            UsingContext(Contexts.Sublime);
+                Fullscreen                %= F11;
+                Close                     %= Ctrl + W;
+
+                Comment                   %= Ctrl + Backslash;
+                Uncomment                 %= Ctrl + Backslash;
 
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;

@@ -34,12 +34,12 @@ namespace PinkyTwirl
             var TL = WindowFunctions.GetWindowTL();
             
             var MenuPos = TL;
-            MenuPos.X += 8;
-            MenuPos.Y += 8;
+            MenuPos.X += 16;
+            MenuPos.Y += 16;
 
             var AppBarPos = TL;
-            AppBarPos.X += 50;
-            AppBarPos.Y += 8;
+            AppBarPos.X += 60;
+            AppBarPos.Y += 16;
 
             var HoldPos = Cursor.Position;
 

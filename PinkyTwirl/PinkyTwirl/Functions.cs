@@ -18,27 +18,29 @@ namespace PinkyTwirl
     {
         public static void StartAltShiftTab()
         {
-            (LMenu + LShift + Tab).DoDown();
+            Alt.DoDown();
+            (Shift + Tab).Do();
             StartCheckingToEndCtrlTab(Meta);
         }
 
         public static void StartAltTab()
         {
-            (LShift).DoUp();
-            (LMenu + Tab).DoDown();
+            Shift.DoUp();
+            Alt.DoDown();
+            (Tab).Do();
             StartCheckingToEndCtrlTab(Meta);
         }
 
         public static void StartCtrlTab_Up()
         {
-            Key.LControl.DoDown();
+            Ctrl.DoDown();
             (Tab).Do();
             StartCheckingToEndCtrlTab(Key.D2);
         }
 
         public static void StartCtrlTab_Down()
         {
-            Key.LControl.DoDown();
+            Ctrl.DoDown();
             (Shift + Tab).Do();
             StartCheckingToEndCtrlTab(Key.D2);
         }
@@ -70,24 +72,14 @@ namespace PinkyTwirl
             CheckingToEndCtrlTab = false;
 
             App.Skip = true;
-            //(LControl + LShift + LMenu + Tab).DoUp();
             ResetFunctionKeys();
             App.Skip = false;
         }
 
         public static void ResetFunctionKeys()
         {
-            (LControl + LShift + LMenu + Tab).DoUp();
-
-            (
-                LControl | RControl |
-                LShift | RShift |
-                LMenu | RMenu |
-                D1 | D2 | D3 | D4 |
-                Tab | Space | Delete | Backspace | Escape |
-                LButton | RButton |
-                new SemanticAction(Meta)
-            ).DoUp();
+            Alt.DoUp();
+            Ctrl.DoUp();
 
             PinkyTwirlApp.App.Reset();
         }

@@ -22,12 +22,12 @@ namespace PinkyTwirl
 
             CloudberryKingdom = new Context("Cloudberry Kingdom ", null,         Game),
             Dota              = new Context("DOTA",                null,         Game),
-            Terracotta        = new Context("Terracotta",          "Terracotta", Game),
 
             Chrome            = new Context(null,                  "Chrome",     Browser),
             Firefox           = new Context(null,                  "Firefox",    Browser),
             Notepad           = new Context("Notepad",             "",           Default),
             NotepadPlusPlus   = new Context(null,                  "Notepad++",  Ide),
+            Sublime           = new Context("Sublime",             null,         Ide),
             WingIde           = new Context("Wing IDE",            null,         Ide),
             MinGW             = new Context("MINGW",               "",           CommandPrompt),
             Git               = MinGW,

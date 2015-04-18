@@ -110,7 +110,7 @@ namespace PinkyTwirl
                 case ',': return Comma;
                 case '-': return Minus;
                 case '.': return Period;
-                case '/': return Divide;
+                case '/': return Backslash;
                 case '`': return ApplyShift(Tilde);
                 case '\'': return Quotes;
                 case '\\': return Backslash;
