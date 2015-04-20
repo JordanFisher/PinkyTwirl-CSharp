@@ -20,8 +20,8 @@ namespace PinkyTwirl
 
         public Context(string WindowName = null, string WindowDescription = null, Context ParentContext = null)
         {
-            this.WindowName        = WindowName;
-            this.WindowDescription = WindowDescription;
+            this.WindowName        = WindowName == null ? null : WindowName.ToLower();
+            this.WindowDescription = WindowDescription == null ? null : WindowDescription.ToLower();
             this.ParentContext     = ParentContext;
 
             Base.AllContexts.Add(this);

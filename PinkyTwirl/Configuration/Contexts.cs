@@ -23,8 +23,6 @@ namespace PinkyTwirl
             CloudberryKingdom = new Context("Cloudberry Kingdom ", null,         Game),
             Dota              = new Context("DOTA",                null,         Game),
 
-            Chrome            = new Context(null,                  "Chrome",     Browser),
-            Firefox           = new Context(null,                  "Firefox",    Browser),
             Notepad           = new Context("Notepad",             "",           Default),
             NotepadPlusPlus   = new Context(null,                  "Notepad++",  Ide),
             Sublime           = new Context("Sublime",             null,         Ide),
@@ -35,7 +33,11 @@ namespace PinkyTwirl
             LEd               = new Context("LEd",                 null,         Ide),
             Excel             = new Context("Excel",               null,         Default),
             Photoshop         = new Context("Photoshop",           null,         Default),
-            VisualStudio      = new Context("Microsoft Visual",    null,         Ide),
+            
+            VisualStudio      = new Context("Microsoft Visual",    null,            Ide),
+
+            Chrome            = new Context(null,                  "Google Chrome", Browser),
+            Firefox           = new Context(null,                  "Firefox",       Browser),
 
             ExeShell          = new Context(".exe",                null,         CommandPrompt);
     }

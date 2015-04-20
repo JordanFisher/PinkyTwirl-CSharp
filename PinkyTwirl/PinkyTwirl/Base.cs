@@ -25,8 +25,8 @@ namespace PinkyTwirl
             get
             {
                 var Info = WindowFunctions.GetActiveWindowTitle();
-                var ActiveName = Info.Item1;
-                var ActiveDescription = Info.Item2;
+                var ActiveName = Info.Item1 == null ? null : Info.Item1.ToLower();
+                var ActiveDescription = Info.Item2 == null ? null : Info.Item2.ToLower();
 
                 //// Try to match on description only first
                 //if (ActiveDescription != null)

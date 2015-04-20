@@ -171,6 +171,14 @@ namespace PinkyTwirl
                 Comment                   %= Ctrl + Backslash;
                 Uncomment                 %= Ctrl + Backslash;
 
+                //ViewProjectExplorer       %= Ctrl + (K + B + D0);
+                //CloseAllTools             %= Ctrl + (K + B + D1);
+                ViewProjectExplorer       %= Ctrl + D0;
+                CloseAllTools             %= Ctrl + D1;
+
+                FileTabLeft               %= Ctrl + PageUp;
+                FileTabRight              %= Ctrl + PageDown;
+
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;
                 InsertLine %= Shift + Space | Ctrl + Plus;
