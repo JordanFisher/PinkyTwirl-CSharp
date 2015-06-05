@@ -143,6 +143,8 @@ namespace PinkyTwirl
                     Key.D |= FindAllReferences;
                     Key.S |= Rename;
 
+                    //Key.Space |= Ctrl + Tab;
+
                 Chord(Meta, Key.Space);
                     Key.H |= CloseAllTools;
 
@@ -151,10 +153,15 @@ namespace PinkyTwirl
                     Key.U |= ViewOutput;
                     Key.I |= ViewSymbols;
                     Key.O |= ViewFindResults;
-                    Key.N |= ViewCallStack;
+                    Key.L |= ViewCallStack;
                     Key.M |= ViewInteractive;
                     Key.P |= ViewClasses;
                     Key.Y |= ViewConfigurationSelector;
+
+            // Sublime map
+            UsingContext(Contexts.Sublime, CopyParentContext:true);
+                Chord(Meta, Key.Space);
+                    Key.K |= ViewOpenFiles;
 
             // Command prompt. This overrides the tedious Alt-Space e p method for pasting with the default PinkyTwirl paste command Alt + W
             UsingContext(Contexts.CommandPrompt, CopyParentContext:true);

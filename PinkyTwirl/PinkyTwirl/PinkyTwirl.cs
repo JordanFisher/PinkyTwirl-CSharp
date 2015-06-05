@@ -14,12 +14,14 @@ namespace PinkyTwirl
         List<Key> PressedKeys = new List<Key>();
         bool Ambiguous = false;
 
-        bool DoLog { get { return PinkyTwirlForm.TheForm.DoLog; } }
-        void Log(string s) { PinkyTwirlForm.TheForm.Log(s); }
-        void Log(Exception e) { Log("\nError uncaught!" + e.ToString() + '\n'); }
+        public bool DoLog { get { return PinkyTwirlForm.TheForm.DoLog; } }
+        public void Log(string s) { PinkyTwirlForm.TheForm.Log(s); }
+        public void Log(Exception e) { Log("\nError uncaught!" + e.ToString() + '\n'); }
 
         public void HookManager_KeyDown(object sender, KeyEventArgs e)
         {
+            //Log(string.Format("{0}", e.KeyValue));
+
             try
             {
                 if (Skip)
@@ -43,6 +45,9 @@ namespace PinkyTwirl
                     Key.Shift.IsDown ? " Shift" : "",
                     Key.Alt.IsDown   ? " Alt"   : "",
                     Key.Ctrl.IsDown  ? " Ctrl" : ""));
+
+                if (e.KeyCode == Keys.B)
+                    Console.Write("");
 
                 KeyMap CurrentMap = null;
                 if (HoldContext == null)

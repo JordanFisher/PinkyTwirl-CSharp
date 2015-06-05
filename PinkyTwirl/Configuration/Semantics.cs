@@ -124,7 +124,8 @@ namespace PinkyTwirl
             ViewInteractive           = 0,
             ViewClasses               = 0,
             ViewConfigurationSelector = 0,
-            CloseAllTools             = 0;
+            CloseAllTools             = 0,
+            ViewOpenFiles             = 0;
 
         public static void Initialize()
         {
@@ -132,7 +133,8 @@ namespace PinkyTwirl
                 Fullscreen                %= Shift + Alt + Enter;
                 Close                     %= Ctrl + Semicolon;
 
-                Debug                     %= Ctrl + Quotes | Ctrl + Tab;
+                //Debug                     %= Ctrl + Quotes | Ctrl + Tab;
+                Debug                     %= Ctrl + Tilde| Ctrl + Tab;
                 Comment                   %= Ctrl + OpenBrackets;
                 Uncomment                 %= Ctrl + CloseBrackets;
                 Rename                    %= Ctrl + D1;
@@ -145,8 +147,9 @@ namespace PinkyTwirl
                 ViewErrorList             %= Ctrl + W | E;
                 ViewOutput                %= Ctrl + W | O;
                 ViewSymbols               %= Ctrl + W | Q;
-                ViewFindResults           %= Alt + F;
+                ViewFindResults           %= Ctrl + W | F;
                 ViewCallStack             %= Ctrl + D | C;
+                
                 ViewInteractive           %= Ctrl + D | I;
                 ViewClasses               %= Ctrl + D9 | D9;
                 ViewConfigurationSelector %= Ctrl + D6 | D6;
@@ -176,8 +179,10 @@ namespace PinkyTwirl
                 ViewProjectExplorer       %= Ctrl + D0;
                 CloseAllTools             %= Ctrl + D1;
 
-                FileTabLeft               %= Ctrl + PageUp;
-                FileTabRight              %= Ctrl + PageDown;
+                //FileTabLeft               %= Ctrl + PageUp;
+                //FileTabRight              %= Ctrl + PageDown;
+
+                ViewOpenFiles             %= Ctrl + Shift + Q;
 
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;

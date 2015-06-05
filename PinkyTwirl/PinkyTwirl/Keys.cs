@@ -24,11 +24,6 @@ namespace PinkyTwirl
 
     public struct Key
     {
-        //public Key()
-        //{
-            
-        //}
-
         public int Value;
         public Key(int Value)
         {
