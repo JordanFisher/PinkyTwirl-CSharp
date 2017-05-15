@@ -158,6 +158,15 @@ namespace PinkyTwirl
                     Key.P |= ViewClasses;
                     Key.Y |= ViewConfigurationSelector;
 
+            // VS code map
+            UsingContext(Contexts.VSCode, CopyParentContext:true);
+                Chord(Meta, Key.Space);
+                    Key.K |= FindFile;
+                    Key.U |= ViewErrorList;
+                    Key.I |= ViewOutput;
+                    Key.O |= ViewDebugConsole;
+                    Key.P |= ViewTerminal;
+
             // Sublime map
             UsingContext(Contexts.Sublime, CopyParentContext:true);
                 Chord(Meta, Key.Space);

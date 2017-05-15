@@ -125,10 +125,26 @@ namespace PinkyTwirl
             ViewClasses               = 0,
             ViewConfigurationSelector = 0,
             CloseAllTools             = 0,
-            ViewOpenFiles             = 0;
+            ViewOpenFiles             = 0,
+            ViewDebugConsole          = 0,
+            ViewTerminal              = 0,
+            FindFile                  = 0;
 
         public static void Initialize()
         {
+            UsingContext(Contexts.VSCode);
+                ViewProjectExplorer       %= Ctrl + D9;
+                CloseAllTools             %= Ctrl + B;
+                FindFile                  %= Ctrl + E;
+                ViewErrorList             %= Ctrl + D8;
+                Fullscreen                %= Ctrl + K | Z;
+                GotoDefinition            %= F12;
+                ViewOutput                %= Ctrl + Shift + U;
+                ViewDebugConsole          %= Ctrl + Shift + Y;
+                ViewTerminal              %= Ctrl + Tilde;
+                Comment                   %= Ctrl + K | Ctrl + C;
+                Uncomment                 %= Ctrl + K | Ctrl + U;
+
             UsingContext(Contexts.VisualStudio);
                 Fullscreen                %= Shift + Alt + Enter;
                 Close                     %= Ctrl + Semicolon;
@@ -237,6 +253,9 @@ namespace PinkyTwirl
 
             UsingContext(Contexts.Game);
                 Debug              %= Alt + Tab | Ctrl + Quotes | Ctrl + Tab;
+
+            UsingContext(Contexts.Putty);
+                Paste              %= Shift + Insert;
         }
     }
 }
