@@ -29,18 +29,20 @@ namespace PinkyTwirl
             WingIde           = new Context("Wing IDE",            null,         Ide),
             MinGW             = new Context("MINGW",               "",           CommandPrompt),
             Git               = MinGW,
-            IPython           = new Context("IPython",             null,         CommandPrompt),
+            Ubuntu            = new Context("ubuntu",              null,         Git),
+            IPython           = new Context("IPython",             null,         Git),
             LEd               = new Context("LEd",                 null,         Ide),
             Excel             = new Context("Excel",               null,         Default),
             Photoshop         = new Context("Photoshop",           null,         Default),
-            
+
             VisualStudio      = new Context("Microsoft Visual",    null,                  Ide),
             VSCode            = new Context("Code",                "Visual Studio Code",  Ide),
 
-            Chrome            = new Context("Chrome",              null,         Browser),
-            Firefox           = new Context(null,                  "Firefox",    Browser),
-
             ExeShell          = new Context(".exe",                null,         CommandPrompt),
-            Putty             = new Context("@",                   "",           CommandPrompt);
+            Putty             = new Context("PuTTY",               "",           Git),
+            Putty2            = new Context("@",                   "",           Git),
+
+            Chrome            = new Context("Chrome",              null,         Browser),
+            Firefox           = new Context(null,                  "Firefox",    Browser);
     }
 }

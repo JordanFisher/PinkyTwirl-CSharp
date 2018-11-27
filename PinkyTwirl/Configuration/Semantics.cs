@@ -103,8 +103,27 @@ namespace PinkyTwirl
             // Console
             ClearScreen = 0,
 
+            // tmux
+            PaneLeft = Ctrl + B | Left,
+            PaneRight = Ctrl + B | Right,
+            PaneUp = Ctrl + B | Up,
+            PaneDown = Ctrl + B | Down,
+            PaneSyncOn = Ctrl + B | ":" | "setw synchronize-panes on" | Enter,
+            PaneSyncOff = Ctrl + B | ":" | "setw synchronize-panes off" | Enter,
+            PaneNew = Ctrl + B | Shift + D5,
+            PaneKill = Ctrl + B | X | Y,
+            PaneArrange = Ctrl + B | Alt + D5,
+            PaneBig = Ctrl + B | Z,
+
             // git
-            Commit = DeleteLine | "git add . ; git commit -a",
+        GitStatus = DeleteLine | "clear ; git status **" | Left,
+            GitDiff = DeleteLine | "clear ; git diff **" | Left,
+            GitAdd = DeleteLine | "clear ; git add ** ; git status" | 13 * Left,
+            GitCommit = DeleteLine | "git commit -m\"\"" | Left,
+            GitPush = DeleteLine | "git push origin ",
+            GitReset = DeleteLine | "git reset ; clear ; git status",
+            GitResetHard = DeleteLine | "git reset --hard HEAD ; clear ; git status",
+            ReverseSearch = Ctrl + R,
 
             // IDE
             Debug                     = 0,
@@ -240,7 +259,7 @@ namespace PinkyTwirl
 
                 ClearScreen        %= Ctrl + L;
 
-                Paste              %= Menu | E | P;
+                Paste              %= Shift + Insert;
 
                 NavPreviousWord    %= Alt + B;
                 NavNextWord        %= Alt + F;

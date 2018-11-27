@@ -30,10 +30,20 @@ namespace PinkyTwirl
                     return;
                 }
 
+                if (e.Key() == Meta)
+                {
+                    Suppress(e);
+                }
+
                 if (PressedKeys.Count > 0)
                 {
                     var Chord = PressedKeys.Aggregate("", (s, key) => s + key.Value + ',');
                     if (DoLog) Log(string.Format("Chord is {0} {1}.  {2} keys total.", Chord, e.Key().Value, PressedKeys.Count + 1));
+
+                    if (e.Key() == PressedKeys[0])
+                    {
+                        Suppress(e);
+                    }
                 }
 
                 // Shift-Shift = CapsLock
@@ -140,13 +150,12 @@ namespace PinkyTwirl
                 //{
                 //    Skip = true;
                 //    (LControl | LShift | LMenu | RControl | RShift | RMenu | Alt | Tab | AltMod).DoUp();
-                //    OtherWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.RMENU);
-                //    OtherWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.LMENU);
+                //    OthehrWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.RMENU);
+                //    OtherhWindowsInput.InputSimulator.SimulateKeyUp(OtherWindowsInput.VirtualKeyCode.LMENU);
                 //    // alt + tab
                 //    //(LMenu + Tab).DoUp();
                 //    Skip = false;
                 //}
-
                 if (Ambiguous && PressedKeys.Contains(e.Key()))
                 {
                     Ambiguous = false;

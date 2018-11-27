@@ -189,14 +189,29 @@ namespace PinkyTwirl
             // Git map
             UsingContext(Contexts.Git, CopyParentContext:true);
                 Chord(Meta);
-                    Key.F |= Commit;
-                    Key.C |= DeleteLine | "git config --global user.email \"jordan@pwnee.com\"";
+                    Key.S |= GitStatus;
+                    Key.D |= GitDiff;
+                    Key.F |= GitAdd;
+                    Key.G |= GitCommit;
+                    Key.P |= GitPush;
+                    Key.R |= GitReset;
+                    Key.E |= GitResetHard;
+                    Key.C |= DeleteLine | "git config --global user.name \"Jordan Fisher\"";
                     Key.V |= DeleteLine | "git config --global user.email \"jordan.efisher@gmail.com\"";
+                    Key.A |= ReverseSearch;
 
-            // Photoshop mapu
-            UsingContext(Contexts.Photoshop, CopyParentContext:true);
+                // tmux map
                 Chord(Key.D1);
-                    //Key.P |= SaveAsPNG;
+                    Key.J |= PaneLeft;
+                    Key.L |= PaneRight;
+                    Key.I |= PaneUp;
+                    Key.K |= PaneDown;
+                    Key.Comma  |= PaneSyncOn;
+                    Key.Period |= PaneSyncOff;
+                    Key.M |= PaneArrange;
+                    Key.N |= PaneBig;
+                    Key.OpenBrackets |= PaneNew;
+                    Key.CloseBrackets |= PaneKill;
 
             // Game map
             UsingContext(Contexts.Game, CopyParentContext:true);
