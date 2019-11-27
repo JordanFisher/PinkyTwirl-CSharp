@@ -20,13 +20,8 @@ namespace PinkyTwirl
 
             CommandPrompt     = new Context("Command Prompt",      "",           Default),
 
-            CloudberryKingdom = new Context("Cloudberry Kingdom ", null,         Game),
-            Dota              = new Context("DOTA",                null,         Game),
-
             Notepad           = new Context("Notepad",               "",         Default),
             NotepadPlusPlus   = new Context(null,                  "Notepad++",  Ide),
-            Sublime           = new Context("Sublime",             null,         Ide),
-            WingIde           = new Context("Wing IDE",            null,         Ide),
             MinGW             = new Context("MINGW",               "",           CommandPrompt),
             Git               = MinGW,
             Ubuntu            = new Context("ubuntu",              null,         Git),
@@ -35,11 +30,12 @@ namespace PinkyTwirl
             Excel             = new Context("Excel",               null,         Default),
             Photoshop         = new Context("Photoshop",           null,         Default),
 
-            VisualStudio      = new Context("Microsoft Visual",    null,         Ide),
-            //VSCode            = new Context("Code",                "Visual Studio Code",  Ide),
-            VSCode            = new Context("Code",                null,         Ide),
+            VisualStudio      = new Context("Microsoft Visual", null, Ide),
+            VSCode            = new Context(null, "Visual Studio Code",  Ide),
+            VSCode            = new Context("Visual Studio Code", null,  Ide),
+            VSCode            = new Context("Visual Studio Code", "Visual Studio Code", Ide),
 
-            ExeShell = new Context(".exe",                null,         CommandPrompt),
+            ExeShell          = new Context(".exe",                null,         CommandPrompt),
             Putty             = new Context("PuTTY",               "",           Git),
             Putty2            = new Context("@",                   "",           Git),
 
