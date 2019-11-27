@@ -116,7 +116,7 @@ namespace PinkyTwirl
             PaneBig = Ctrl + B | Z,
 
             // git
-        GitStatus = DeleteLine | "clear ; git status **" | Left,
+            GitStatus = DeleteLine | "clear ; git status **" | Left,
             GitDiff = DeleteLine | "clear ; git diff **" | Left,
             GitAdd = DeleteLine | "clear ; git add ** ; git status" | 13 * Left,
             GitCommit = DeleteLine | "git commit -m\"\"" | Left,
@@ -152,10 +152,10 @@ namespace PinkyTwirl
         public static void Initialize()
         {
             UsingContext(Contexts.VSCode);
-                ViewProjectExplorer       %= Ctrl + D9;
+                ViewProjectExplorer       %= Ctrl + Shift + E;
                 CloseAllTools             %= Ctrl + B;
                 FindFile                  %= Ctrl + E;
-                ViewErrorList             %= Ctrl + D8;
+                ViewErrorList             %= Ctrl + Shift + M;
                 Fullscreen                %= Ctrl + K | Z;
                 GotoDefinition            %= F12;
                 ViewOutput                %= Ctrl + Shift + U;
