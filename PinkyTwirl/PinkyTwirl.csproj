@@ -106,10 +106,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" Condition="$(DefineConstants.Contains('WITH_GAME'))">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -171,10 +167,6 @@
     <ProjectReference Include="..\InputSimulator\InputSimulator.csproj">
       <Project>{3549cd6f-80f8-450f-b99e-cf0a736b1f2a}</Project>
       <Name>InputSimulator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PinkyGame\PinkyGame\PinkyGame.csproj" Condition="$(DefineConstants.Contains('WITH_GAME'))">
-      <Project>{648ec513-564d-48b5-aa3f-34bfa4391a41}</Project>
-      <Name>PinkyGame</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsInput\WindowsInput.csproj">
       <Project>{002f760b-4608-4473-80e0-b9c666ca1f88}</Project>

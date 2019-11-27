@@ -35,10 +35,11 @@ namespace PinkyTwirl
             Excel             = new Context("Excel",               null,         Default),
             Photoshop         = new Context("Photoshop",           null,         Default),
 
-            VisualStudio      = new Context("Microsoft Visual",    null,                  Ide),
-            VSCode            = new Context("Code",                "Visual Studio Code",  Ide),
+            VisualStudio      = new Context("Microsoft Visual",    null,         Ide),
+            //VSCode            = new Context("Code",                "Visual Studio Code",  Ide),
+            VSCode            = new Context("Code",                null,         Ide),
 
-            ExeShell          = new Context(".exe",                null,         CommandPrompt),
+            ExeShell = new Context(".exe",                null,         CommandPrompt),
             Putty             = new Context("PuTTY",               "",           Git),
             Putty2            = new Context("@",                   "",           Git),
 
