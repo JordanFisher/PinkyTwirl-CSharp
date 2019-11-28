@@ -152,6 +152,8 @@ namespace PinkyTwirl
         public static void Initialize()
         {
             UsingContext(Contexts.VSCode);
+                SearchAll                 %= Ctrl + Shift + F;
+                Close                     %= Ctrl + W;
                 ViewProjectExplorer       %= Ctrl + Shift + E;
                 CloseAllTools             %= Ctrl + B;
                 FindFile                  %= Ctrl + E;
@@ -202,23 +204,6 @@ namespace PinkyTwirl
                 CollapseScope             %= Ctrl + Alt + F;
                 ExpandScope               %= Shift + Ctrl + Alt + F;
 
-            UsingContext(Contexts.Sublime);
-                Fullscreen                %= F11;
-                Close                     %= Ctrl + W;
-
-                Comment                   %= Ctrl + Backslash;
-                Uncomment                 %= Ctrl + Backslash;
-
-                //ViewProjectExplorer       %= Ctrl + (K + B + D0);
-                //CloseAllTools             %= Ctrl + (K + B + D1);
-                ViewProjectExplorer       %= Ctrl + D0;
-                CloseAllTools             %= Ctrl + D1;
-
-                //FileTabLeft               %= Ctrl + PageUp;
-                //FileTabRight              %= Ctrl + PageDown;
-
-                ViewOpenFiles             %= Ctrl + Shift + Q;
-
             UsingContext(Contexts.Excel);
                 DeleteLine %= Shift + Space | Ctrl + Minus;
                 InsertLine %= Shift + Space | Ctrl + Plus;
@@ -261,8 +246,9 @@ namespace PinkyTwirl
 
                 Paste              %= Shift + Insert;
 
-                NavPreviousWord    %= Alt + B;
-                NavNextWord        %= Alt + F;
+                // These no longer appear correct, instead just use the default ctrl left and right.
+                //NavPreviousWord    %= Alt + B;
+                //NavNextWord        %= Alt + F;
 
                 DeleteEnd          %= Ctrl + K;
                 DeleteHome         %= Ctrl + U;

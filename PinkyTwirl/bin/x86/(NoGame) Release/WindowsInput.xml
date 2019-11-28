@@ -2214,12 +2214,12 @@
         </member>
         <member name="T:WindowsInput.WindowsInputMessageDispatcher">
             <summary>
-            Implements the <see cref="T:WindowsInput.IInputMessageDispatcher"/> by calling <see cref="M:WindowsInput.Native.NativeMethods.SendInput(System.UInt32,WindowsInput.Native.INPUT[],System.Int32)"/>.
+            Implements the <see cref="T:WindowsInput.IInputMessageDispatcher"/> by calling NativeMethods.SendInput.
             </summary>
         </member>
         <member name="M:WindowsInput.WindowsInputMessageDispatcher.DispatchInput(WindowsInput.Native.INPUT[])">
             <summary>
-            Dispatches the specified list of <see cref="T:WindowsInput.Native.INPUT"/> messages in their specified order by issuing a single called to <see cref="M:WindowsInput.Native.NativeMethods.SendInput(System.UInt32,WindowsInput.Native.INPUT[],System.Int32)"/>.
+            Dispatches the specified list of <see cref="T:WindowsInput.Native.INPUT"/> messages in their specified order by issuing a single called to NativeMethods.SendInput.
             </summary>
             <param name="inputs">The list of <see cref="T:WindowsInput.Native.INPUT"/> messages to be dispatched.</param>
             <exception cref="T:System.ArgumentException">If the <paramref name="inputs"/> array is empty.</exception>

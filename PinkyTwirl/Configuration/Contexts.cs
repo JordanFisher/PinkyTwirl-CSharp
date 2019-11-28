@@ -32,8 +32,8 @@ namespace PinkyTwirl
 
             VisualStudio      = new Context("Microsoft Visual", null, Ide),
             VSCode            = new Context(null, "Visual Studio Code",  Ide),
-            VSCode            = new Context("Visual Studio Code", null,  Ide),
-            VSCode            = new Context("Visual Studio Code", "Visual Studio Code", Ide),
+            VSCode2           = new Context("Visual Studio Code", null,  VSCode),
+            VSCode3           = new Context("Visual Studio Code", "Visual Studio Code", VSCode),
 
             ExeShell          = new Context(".exe",                null,         CommandPrompt),
             Putty             = new Context("PuTTY",               "",           Git),

@@ -160,17 +160,15 @@ namespace PinkyTwirl
 
             // VS code map
             UsingContext(Contexts.VSCode, CopyParentContext:true);
+                Chord(Meta);
+                    Key.Q |= SearchAll;
+
                 Chord(Meta, Key.Space);
                     Key.K |= FindFile;
                     Key.U |= ViewErrorList;
                     Key.I |= ViewOutput;
                     Key.O |= ViewDebugConsole;
                     Key.P |= ViewTerminal;
-
-            // Sublime map
-            UsingContext(Contexts.Sublime, CopyParentContext:true);
-                Chord(Meta, Key.Space);
-                    Key.K |= ViewOpenFiles;
 
             // Command prompt. This overrides the tedious Alt-Space e p method for pasting with the default PinkyTwirl paste command Alt + W
             UsingContext(Contexts.CommandPrompt, CopyParentContext:true);
