@@ -192,6 +192,21 @@ namespace PinkyTwirl
                     Key.J |= SearchTabs;
 
 
+            // PowerShell git map
+            UsingContext(Contexts.GitCommandPrompt, CopyParentContext:true);
+                Chord(Meta);
+                    Key.S |= GitStatus;
+                    Key.D |= GitDiff;
+                    Key.F |= GitAdd;
+                    Key.G |= GitCommit;
+                    Key.P |= GitPush;
+                    Key.R |= GitReset;
+                    Key.E |= GitResetHard;
+                    Key.C |= DeleteLine | "git config --global user.name \"Jordan Fisher\"";
+                    Key.V |= DeleteLine | "git config --global user.email \"jordan.efisher@gmail.com\"";
+                    Key.A |= ReverseSearch;
+
+
             // Git map
             UsingContext(Contexts.Git, CopyParentContext:true);
                 Chord(Meta);

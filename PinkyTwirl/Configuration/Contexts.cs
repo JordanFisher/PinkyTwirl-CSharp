@@ -19,12 +19,14 @@ namespace PinkyTwirl
             Game              = new Context(Simple),
 
             CommandPrompt     = new Context("Command Prompt",      "",           Default),
+            GitCommandPrompt  = new Context("Command Prompt",      "",           Default),
 
             Notepad           = new Context("Notepad",               "",         Default),
             NotepadPlusPlus   = new Context(null,                  "Notepad++",  Ide),
             MinGW             = new Context("MINGW",               "",           CommandPrompt),
             Git               = MinGW,
             Ubuntu            = new Context("ubuntu",              null,         Git),
+            PowerShell        = new Context("PowerShell",          null,         GitCommandPrompt),
             IPython           = new Context("IPython",             null,         Git),
             LEd               = new Context("LEd",                 null,         Ide),
             Excel             = new Context("Excel",               null,         Default),
