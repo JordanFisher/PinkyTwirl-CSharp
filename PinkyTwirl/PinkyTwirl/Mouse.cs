@@ -52,6 +52,22 @@ namespace PinkyTwirl
             Cursor.Position = HoldPos;
         }
 
+        public static void ClickChromeTabSearch()
+        {
+            var TR = WindowFunctions.GetWindowTR();
+
+            var MenuPos = TR;
+            MenuPos.X -= 160;
+            MenuPos.Y += 20;
+
+            var HoldPos = Cursor.Position;
+
+            Cursor.Position = MenuPos;
+            MouseLeftClick();
+
+            Cursor.Position = HoldPos;
+        }
+
         public static void MouseLeftClick() { MouseLeftClick(Cursor.Position); }
         public static void MouseLeftClick(Point pos)
         {

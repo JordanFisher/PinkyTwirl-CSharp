@@ -65,6 +65,7 @@ namespace PinkyTwirl
             Copy           = Ctrl + C,
             Paste          = Ctrl + V,
             InsertLine     = Up | End | Enter,
+            Rewrap         = Alt + M,
 
             // Search/replace
             Search    = Ctrl + F,
@@ -89,10 +90,12 @@ namespace PinkyTwirl
             SaveAll        = Ctrl + Shift + S,
             Close          = Ctrl + Semicolon,
             CloseAllBut    = Ctrl + Shift + Semicolon,
+            FormatDoc      = Shift + Alt + F,
 
             // Brower
             NewTab         = Ctrl + T,
             CloseTab       = Ctrl + W,
+            SearchTabs     = (SemanticAction)Mouse.ClickChromeTabSearch, //Ctrl + Shift + A,
 
             // Application
             Fullscreen     = None + F11,
@@ -163,7 +166,7 @@ namespace PinkyTwirl
                 ViewOutput                %= Ctrl + Shift + U;
                 ViewDebugConsole          %= Ctrl + Shift + Y;
                 ViewTerminal              %= Ctrl + Tilde;
-                Comment                   %= Ctrl + K | Ctrl + C;
+                Comment                   %= Ctrl + Question;// K | Ctrl + C;
                 Uncomment                 %= Ctrl + K | Ctrl + U;
 
             UsingContext(Contexts.VisualStudio);
@@ -237,6 +240,23 @@ namespace PinkyTwirl
                 DeleteLine         %= Escape;
                 DeletePreviousWord %= Backspace;
                 DeleteNextWord     %= Delete;
+
+            UsingContext(Contexts.WindowsSsh);
+                Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;
+                EndApplication     %= Menu | C;
+
+                ClearScreen        %= Ctrl + L;
+
+                Paste              %= Menu | E | P;
+
+                NavPreviousWord    %= Alt + B;
+                NavNextWord        %= Alt + F;
+
+                DeleteEnd          %= Ctrl + K;
+                DeleteHome         %= Ctrl + U;
+                DeleteLine         %= Home + DeleteEnd;
+                DeletePreviousWord %= Ctrl + W;
+                DeleteNextWord     %= NavNextWord | DeletePreviousWord;
 
             UsingContext(Contexts.Git);
                 Menu               %= (SemanticAction)Mouse.ClickConsoleMenu;

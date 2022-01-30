@@ -50,6 +50,8 @@ namespace PinkyTwirl
 
                     Key.T |= Fullscreen;
 
+                    Key.V |= Rewrap;
+
                     Key.Tab |= ProgramTab;
                     Key.F4  |= EndApplication;
 
@@ -105,6 +107,7 @@ namespace PinkyTwirl
                     Key.P |= CloseAllBut;
                     Key.O |= Close;
                     Key.I |= Save;
+                    Key.U |= FormatDoc;
 
                 Chord(Meta, Key.Space);
                     Key.G |= (Action)StartGit2;
@@ -138,7 +141,7 @@ namespace PinkyTwirl
 
                     Key.B |= Debug;
                     Key.G |= CollapseScope;
-                    Key.V |= ExpandScope;
+                    //Key.V |= ExpandScope;
                     Key.F |= GotoDefinition;
                     Key.D |= FindAllReferences;
                     Key.S |= Rename;
@@ -162,6 +165,7 @@ namespace PinkyTwirl
             UsingContext(Contexts.VSCode, CopyParentContext:true);
                 Chord(Meta);
                     Key.Q |= SearchAll;
+                    Key.V |= Rewrap;
 
                 Chord(Meta, Key.Space);
                     Key.K |= FindFile;
@@ -183,6 +187,10 @@ namespace PinkyTwirl
                 Chord(Key.D2);
                     Key.O |= CloseTab;
                     Key.I |= NewTab;
+
+                Chord(Meta, Key.Space);
+                    Key.J |= SearchTabs;
+
 
             // Git map
             UsingContext(Contexts.Git, CopyParentContext:true);

@@ -13,7 +13,7 @@ namespace PinkyTwirl
     {
         public static PinkyTwirlApp App = new PinkyTwirlApp();
 
-        public static Key Meta = Key.F15;//.D8;
+        public static Key Meta = Key.F15;
         public static Context CurrentContext = null;
         public static Key CurrentChord1 = Key.None, CurrentChord2 = Key.None;
 
