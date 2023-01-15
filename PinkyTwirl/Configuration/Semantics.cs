@@ -119,9 +119,9 @@ namespace PinkyTwirl
             PaneBig = Ctrl + B | Z,
 
             // git
-            GitStatus = DeleteLine | "clear ; git status **" | Left,
-            GitDiff = DeleteLine | "clear ; git diff **" | Left,
-            GitAdd = DeleteLine | "clear ; git add ** ; git status" | 13 * Left,
+            GitStatus = DeleteLine | "clear ; git status -- \"******\"" | 4 * Left,
+            GitDiff = DeleteLine | "clear ; git diff -- \"******\"" | 4 * Left,
+            GitAdd = DeleteLine | "clear ; git add -- \"******\" ; git status" | 17 * Left,
             GitCommit = DeleteLine | "git commit -m\"\"" | Left,
             GitPush = DeleteLine | "git push origin ",
             GitReset = DeleteLine | "git reset ; clear ; git status",

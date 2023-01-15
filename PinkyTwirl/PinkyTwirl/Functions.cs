@@ -156,14 +156,5 @@ namespace PinkyTwirl
                 Marshal.FinalReleaseComObject(o);
             }
         }
-
-        public static void SaveAsPNG()
-        {
-            App.Skip = true;
-            (Shift + Tab | Shift + Tab | Down | Space).Do();
-            System.Threading.Thread.Sleep(150);
-            (3 * Tab | 8 * P | Shift + Tab).Do();
-            App.Skip = false;
-        }
     }
 }

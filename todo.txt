@@ -1,0 +1,13 @@
+https://github.com/microsoft/PowerToys/blob/fa3a5f80a113568155d9c2dbbcea8af16e15afa1/src/modules/keyboardmanager/KeyboardManagerEngineLibrary/KeyboardEventHandlers.cpp
+
+Rewrite in Rust
+	Abstract out the OS stuff. Do this by having an "engine" object that you pass around
+
+Make MacOS port
+	https://github.com/servo/core-foundation-rs
+	https://stackoverflow.com/questions/5785630/modify-nsevent-to-send-a-different-key-than-the-one-that-was-pressed/5785895#5785895
+	https://stackoverflow.com/questions/30308192/how-to-hook-remap-an-arbitrary-keyboard-event-on-osx
+
+Improve context selector
+
+Embed Python? Also have a lightweight YAML-thingie as a config?

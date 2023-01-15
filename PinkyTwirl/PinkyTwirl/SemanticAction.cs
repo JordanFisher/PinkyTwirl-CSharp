@@ -95,7 +95,7 @@ namespace PinkyTwirl
         {
             return new SemanticAction(() =>
             {
-                for (int i = 0; i <= RepeatNumber; i++)
+                for (int i = 0; i < RepeatNumber; i++)
                 {
                     k.Execute();
                 }
