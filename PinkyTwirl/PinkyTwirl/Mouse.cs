@@ -54,11 +54,17 @@ namespace PinkyTwirl
 
         public static void ClickChromeTabSearch()
         {
-            var TR = WindowFunctions.GetWindowTR();
+            // Previous location in Chrome.
+            //var TR = WindowFunctions.GetWindowTR();
+            //var MenuPos = TR;
+            //MenuPos.X -= 160;
+            //MenuPos.Y += 20;
 
+            // Current location in Chrome.
+            var TR = WindowFunctions.GetWindowTL();
             var MenuPos = TR;
-            MenuPos.X -= 160;
-            MenuPos.Y += 20;
+            MenuPos.X += 15;
+            MenuPos.Y += 15;
 
             var HoldPos = Cursor.Position;
 

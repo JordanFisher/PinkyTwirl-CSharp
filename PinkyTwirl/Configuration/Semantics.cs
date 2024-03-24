@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -12,99 +13,102 @@ namespace PinkyTwirl
     {
         public static SemanticAction
             // Text navigation
-            NavLeft         = None + Left,
-            NavRight        = None + Right,
-            NavUp           = None + Up,
-            NavDown         = None + Down,
-            NavHome         = None + Home,
-            NavEnd          = None + End,
-            NavPageUp       = None + PageUp,
-            NavPageDown     = None + PageDown,
-            NavNextWord     = Ctrl + Right,
+            NavLeft = None + Left,
+            NavRight = None + Right,
+            NavUp = None + Up,
+            NavDown = None + Down,
+            NavHome = None + Home,
+            NavEnd = None + End,
+            NavPageUp = None + PageUp,
+            NavPageDown = None + PageDown,
+            NavNextWord = Ctrl + Right,
             NavPreviousWord = Ctrl + Left,
-            NavBigUp        = 12 * Up,
-            NavBigDown      = 12 * Down,
-            NavTop          = Ctrl + Home,
-            NavBottom       = Ctrl + End,
+            NavBigUp = 12 * Up,
+            NavBigDown = 12 * Down,
+            NavTop = Ctrl + Home,
+            NavBottom = Ctrl + End,
 
             // Text selection
-            SelectLeft         = Shift + Left,
-            SelectRight        = Shift + Right,
-            SelectUp           = Shift + Up,
-            SelectDown         = Shift + Down,
-            SelectHome         = Shift + Home,
-            SelectEnd          = Shift + End,
-            SelectPageUp       = Shift + PageUp,
-            SelectPageDown     = Shift + PageDown,
-            SelectNextWord     = Shift + NavNextWord,
+            SelectLeft = Shift + Left,
+            SelectRight = Shift + Right,
+            SelectUp = Shift + Up,
+            SelectDown = Shift + Down,
+            SelectHome = Shift + Home,
+            SelectEnd = Shift + End,
+            SelectPageUp = Shift + PageUp,
+            SelectPageDown = Shift + PageDown,
+            SelectNextWord = Shift + NavNextWord,
             SelectPreviousWord = Shift + NavPreviousWord,
-            SelectBigUp        = Shift + NavBigUp,
-            SelectBigDown      = Shift + NavBigDown,
-            SelectTop          = Shift + NavTop,
-            SelectBottom       = Shift + NavBottom,
+            SelectBigUp = Shift + NavBigUp,
+            SelectBigDown = Shift + NavBigDown,
+            SelectTop = Shift + NavTop,
+            SelectBottom = Shift + NavBottom,
 
             // Text deletion
-            DeleteLine         = Home | Home | Shift + End | Delete,
-            DeleteLeft         = None + Backspace,
-            DeleteRight        = None + Delete,
-            DeleteUp           = NavUp   | DeleteLine,
-            DeleteDown         = NavDown | DeleteLine,
-            DeleteHome         = SelectHome | Delete,
-            DeleteEnd          = SelectEnd  | Delete,
-            DeletePageUp       = SelectPageUp   | Delete,
-            DeletePageDown     = SelectPageDown | Delete,
-            DeleteNextWord     = SelectNextWord     | Delete,
+            DeleteLine = Home | Home | Shift + End | Delete,
+            DeleteLeft = None + Backspace,
+            DeleteRight = None + Delete,
+            DeleteUp = NavUp | DeleteLine,
+            DeleteDown = NavDown | DeleteLine,
+            DeleteHome = SelectHome | Delete,
+            DeleteEnd = SelectEnd | Delete,
+            DeletePageUp = SelectPageUp | Delete,
+            DeletePageDown = SelectPageDown | Delete,
+            DeleteNextWord = SelectNextWord | Delete,
             DeletePreviousWord = SelectPreviousWord | Delete,
-            DeleteBigUp        = SelectBigUp   | Delete,
-            DeleteBigDown      = SelectBigDown | Delete,
-            DeleteTop          = SelectTop    | Delete,
-            DeleteBottom       = SelectBottom | Delete,
-            
+            DeleteBigUp = SelectBigUp | Delete,
+            DeleteBigDown = SelectBigDown | Delete,
+            DeleteTop = SelectTop | Delete,
+            DeleteBottom = SelectBottom | Delete,
+
             // Text action
-            Cut            = Ctrl + X,
-            Copy           = Ctrl + C,
-            Paste          = Ctrl + V,
-            InsertLine     = Up | End | Enter,
-            Rewrap         = Alt + M,
+            Cut = Ctrl + X,
+            Copy = Ctrl + C,
+            Paste = Ctrl + V,
+            InsertLine = Up | End | Enter,
+            Rewrap = Alt + M,
 
             // Search/replace
-            Search    = Ctrl + F,
+            Search = Ctrl + F,
             SearchAll = Ctrl + F,
-            Replace   = Ctrl + H,
+            Replace = Ctrl + H,
 
             // State
-            Undo           = Ctrl + Z,
-            Redo           = Ctrl + Y,
+            Undo = Ctrl + Z,
+            Redo = Ctrl + Y,
 
             // Navigate
-            AddressBar     = Alt + D,
-            Focus          = AddressBar | F6 | F6 | F6,
-            ProgramTab     = (Action)StartAltTab,
-            FileTabLeft    = (Action)StartCtrlTab_Up,
-            FileTabRight   = (Action)StartCtrlTab_Down,
-            Menu           = None + Alt,
+            AddressBar = Alt + D,
+            Focus = AddressBar | F6 | F6 | F6,
+            ProgramTab = (Action)StartAltTab,
+            FileTabLeft = (Action)StartCtrlTab_Up,
+            FileTabRight = (Action)StartCtrlTab_Down,
+            Menu = None + Alt,
 
             // File actions
-            Save           = Ctrl + S,
-            SaveAs         = Ctrl + Alt + S,
-            SaveAll        = Ctrl + Shift + S,
-            Close          = Ctrl + Semicolon,
-            CloseAllBut    = Ctrl + Shift + Semicolon,
-            FormatDoc      = Shift + Alt + F,
+            Save = Ctrl + S,
+            SaveAs = Ctrl + Alt + S,
+            SaveAll = Ctrl + Shift + S,
+            Close = Ctrl + Semicolon,
+            CloseAllBut = Ctrl + Shift + Semicolon,
+            FormatDoc = Shift + Alt + F,
 
             // Brower
-            NewTab         = Ctrl + T,
-            CloseTab       = Ctrl + W,
-            SearchTabs     = (SemanticAction)Mouse.ClickChromeTabSearch, //Ctrl + Shift + A,
+            NewTab = Ctrl + T,
+            CloseTab = Ctrl + W,
+            SearchTabs = (SemanticAction)Mouse.ClickChromeTabSearch, //Ctrl + Shift + A,
 
             // Application
-            Fullscreen     = None + F11,
+            Fullscreen = None + F11,
             EndApplication = Alt + F4,
 
             // Game
 
             // Console
-            ClearScreen = 0,
+            ClearScreen = Ctrl + L,
+            Break = Ctrl + C,
+            KillAllPythonCmd = DeleteLine | "ps -ef | grep $USER | grep python | grep -v grep | grep -v vscode | awk '{print $2}' | xargs -r kill -9",
+            KillAllPython = KillAllPythonCmd | Home | 27 * Right,
 
             // tmux
             PaneLeft = Ctrl + B | Left,
@@ -129,28 +133,36 @@ namespace PinkyTwirl
             ReverseSearch = Ctrl + R,
 
             // IDE
-            Debug                     = 0,
-            Comment                   = 0,
-            Uncomment                 = 0,
-            Rename                    = 0,
-            FindAllReferences         = 0,
-            GotoDefinition            = 0,
-            CollapseScope             = 0,
-            ExpandScope               = 0,
-            ViewProjectExplorer       = 0,
-            ViewErrorList             = 0,
-            ViewOutput                = 0,
-            ViewSymbols               = 0,
-            ViewFindResults           = 0,
-            ViewCallStack             = 0,
-            ViewInteractive           = 0,
-            ViewClasses               = 0,
+            Debug = 0,
+            Comment = 0,
+            Uncomment = 0,
+            Rename = 0,
+            FindAllReferences = 0,
+            GotoDefinition = 0,
+            CollapseScope = 0,
+            ExpandScope = 0,
+            ViewProjectExplorer = 0,
+            ViewErrorList = 0,
+            ViewOutput = 0,
+            ViewSymbols = 0,
+            ViewFindResults = 0,
+            ViewCallStack = 0,
+            ViewInteractive = 0,
+            ViewClasses = 0,
             ViewConfigurationSelector = 0,
-            CloseAllTools             = 0,
-            ViewOpenFiles             = 0,
-            ViewDebugConsole          = 0,
-            ViewTerminal              = 0,
-            FindFile                  = 0;
+            CloseAllTools = 0,
+            ViewOpenFiles = 0,
+            ViewDebugConsole = 0,
+            ViewTerminal = 0,
+            FindFile = 0,
+
+            // Split plane IDE
+            SelectPanel1 = Alt + Tab | 5 * Escape | Break | Escape |    Break,// Ctrl + D1,
+            SelectPanel2 = SelectPanel1,// Ctrl + D2,
+            SelectPanel3 = Ctrl + D3,
+            ExecuteLastCommand = ClearScreen | Up | Enter,
+            SwitchAndExecuteLastCommand = Save | SelectPanel2 | ExecuteLastCommand,// | SelectPanel1,
+            SwitchAndBreak = SelectPanel2 | Break | SelectPanel1;
 
         public static void Initialize()
         {
@@ -168,6 +180,8 @@ namespace PinkyTwirl
                 ViewTerminal              %= Ctrl + Tilde;
                 Comment                   %= Ctrl + Question;// K | Ctrl + C;
                 Uncomment                 %= Ctrl + K | Ctrl + U;
+                //DeleteLine                %= Ctrl + C;
+                ClearScreen               %= Ctrl + L;
 
             UsingContext(Contexts.VisualStudio);
                 Fullscreen                %= Shift + Alt + Enter;

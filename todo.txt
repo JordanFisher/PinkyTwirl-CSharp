@@ -4,6 +4,8 @@ Rewrite in Rust
 	Abstract out the OS stuff. Do this by having an "engine" object that you pass around
 
 Make MacOS port
+    https://karabiner-elements.pqrs.org/docs/
+        This might be good enough to do PinkyTwirl just with configuration! But definitely the underlying code is powerful enough.
 	https://github.com/servo/core-foundation-rs
 	https://stackoverflow.com/questions/5785630/modify-nsevent-to-send-a-different-key-than-the-one-that-was-pressed/5785895#5785895
 	https://stackoverflow.com/questions/30308192/how-to-hook-remap-an-arbitrary-keyboard-event-on-osx

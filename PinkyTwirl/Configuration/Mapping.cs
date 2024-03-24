@@ -111,6 +111,7 @@ namespace PinkyTwirl
 
                 Chord(Meta, Key.Space);
                     Key.G |= (Action)StartGit2;
+                    Key.Q |= KillAllPython;
 
                 Chord(Key.CapsLock);
                     Key.H            |= "{}" | Left;                                          // {}
@@ -167,6 +168,11 @@ namespace PinkyTwirl
                     Key.Q |= SearchAll;
                     Key.V |= Rewrap;
 
+                    Key.D1 |= SelectPanel1;
+                    Key.D2 |= SelectPanel2;
+                    Key.D3 |= SwitchAndBreak;
+                    Key.D4 |= SwitchAndExecuteLastCommand;
+            
                 Chord(Meta, Key.Space);
                     Key.K |= FindFile;
                     Key.U |= ViewErrorList;
