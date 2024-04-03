@@ -112,6 +112,7 @@ namespace PinkyTwirl
                 Chord(Meta, Key.Space);
                     Key.G |= (Action)StartGit2;
                     Key.Q |= KillAllPython;
+                    Key.P |= (Action)InputCreds;
 
                 Chord(Key.CapsLock);
                     Key.H            |= "{}" | Left;                                          // {}
@@ -205,7 +206,7 @@ namespace PinkyTwirl
                     Key.D |= GitDiff;
                     Key.F |= GitAdd;
                     Key.G |= GitCommit;
-                    Key.P |= GitPush;
+                    //Key.P |= GitPush;
                     Key.R |= GitReset;
                     Key.E |= GitResetHard;
                     Key.C |= DeleteLine | "git config --global user.name \"Jordan Fisher\"";
@@ -220,7 +221,7 @@ namespace PinkyTwirl
                     Key.D |= GitDiff;
                     Key.F |= GitAdd;
                     Key.G |= GitCommit;
-                    Key.P |= GitPush;
+                    //Key.P |= GitPush;
                     Key.R |= GitReset;
                     Key.E |= GitResetHard;
                     Key.C |= DeleteLine | "git config --global user.name \"Jordan Fisher\"";

@@ -11,6 +11,7 @@ using System.Text;
 using HookManager;
 
 using WindowsInput;
+using System.Linq;
 
 namespace PinkyTwirl
 {
@@ -154,6 +155,43 @@ namespace PinkyTwirl
             finally
             {
                 Marshal.FinalReleaseComObject(o);
+            }
+        }
+
+        public static void InputCreds()
+        {
+            // Get the path of the executable
+            string exePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Define the filename of the .txt file you want to read
+            string filename = "hooboy.txt";
+
+            // Combine the path of the executable and the filename to get the full path
+            string fullPath = Path.Combine(exePath, filename);
+
+            // Check if the file exists
+            if (File.Exists(fullPath))
+            {
+                // Read the lines of the file
+                var lines = File.ReadLines(fullPath).Take(2).ToArray();
+
+                // Assuming the file has at least two lines
+                if (lines.Length >= 2)
+                {
+                    string firstLine = lines[0];
+                    string secondLine = lines[1];
+                    //Console.WriteLine($"First line: {firstLine}");
+                    //Console.WriteLine($"Second line: {secondLine}");
+                    (Left | firstLine | Enter | secondLine | Enter).Do();
+                }
+                else
+                {
+                    Console.WriteLine("The file does not contain enough lines.");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"{filename} not found.");
             }
         }
     }
